@@ -1,0 +1,218 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html>
+<ui:composition template="/layout/basicLayout.xhtml" xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:b="http://bootsfaces.net/ui"
+                xmlns:pp="http://xmlns.jcp.org/jsf/passthrough"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://java.sun.com/jsf/facelets">
+
+    <ui:define name="content">
+        <h:form style="overflow:none; padding-top: 10px !important;">
+            <h:link title="Powrót" outcome="cancel"  >
+                <f:param name="table_page" value="#{productImageVersionEditController.tablePageInx}" />
+                <h:outputLabel value="Powrót" style="cursor: pointer !important;" />
+            </h:link>
+            <p:messages id="messages" showDetail="true" escape="false" />
+        </h:form>
+
+        <h1>Dodaj wersje produktu</h1>
+
+        <h:form id="form1">
+            <p:panel id="panel" header="" style="margin-bottom:10px; display: block; font-size: 18px; padding: 8px; vertical-align:text-top;margin: 0 auto;">
+                <h:inputHidden value="#{productImageVersionEditController.selected.id}" id="id" />
+                <h:panelGrid columns="2" style="vertical-align:top; width: 100%;"  columnClasses="alignTop,alignCenterTop" >
+
+                    <h:outputLabel for="artNumber"  value="Numer artykułu: " />
+                    <p:inputText id="artNumber"
+                                 style="width: 100%"
+                                 required="true"
+                                 requiredMessage="Numer artykułu: Pole jest wymagane."
+                                 validatorMessage="Numer artykułu: Pole powinno być numeryczne."
+                                 converterMessage="Numer artykułu: Pole powinno być numeryczne."
+                                 value="#{productImageVersionEditController.selected.artNumber}"
+                                 label="artNumber">
+                        <p:ajax event="blur" update="artNumberMsg" />
+                    </p:inputText>
+                    <h:outputText  />
+                    <p:message for="artNumber" id="artNumberMsg" />
+                    <h:outputLabel for="ean"  value="EAN: " />
+                    <p:inputText id="ean"
+                                 style="width: 100%"
+                                 required="true"
+                                 requiredMessage="EAN: Pole jest wymagane."
+                                 validatorMessage="EAN: Pole powinno być numeryczne."
+                                 converterMessage="EAN: Pole powinno być numeryczne."
+                                 value="#{productImageVersionEditController.selected.ean}"
+                                 label="ean">
+                        <p:ajax event="blur" update="eanMsg" />
+                    </p:inputText>
+                    <h:outputText  />
+                    <p:message for="ean" id="eanMsg" />
+                    <h:outputLabel for="title"  value="Nazwa: " />
+                    <p:inputText id="title"
+                                 style="width: 100%"
+                                 required="true"
+                                 requiredMessage="Nazwa: Pole jest wymagane."
+                                 validatorMessage="Nazwa: Pole powinno być numeryczne."
+                                 converterMessage="Nazwa: Pole powinno być numeryczne."
+                                 value="#{productImageVersionEditController.selected.title}"
+                                 label="title">
+                        <p:ajax event="blur" update="titleMsg" />
+                    </p:inputText>
+                    <h:outputText  />
+                    <p:message for="title" id="titleMsg" />
+                </h:panelGrid>
+
+
+
+            <p:commandButton value="Zapisz"
+                             actionListener="#{productImageVersionEditController.saveDetail()}"
+                             partialSubmit="true" ajax="false"
+                             process="@this"
+                             styleClass="appButton"
+                             update=""/>
+            <h:link title="Anuluj" outcome="cancel"   >
+                <f:param name="table_page" value="#{productImageVersionEditController.tablePageInx}" />
+                <h:outputLabel value="Anuluj" styleClass="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only appButton fakeButton" style="" />
+            </h:link>
+
+        </p:panel>
+
+            <c:if test="#{productImageVersionEditController.selected.id!=0}">
+                <p:dataTable var="imageVersionRevision"
+                             value="#{productImageVersionRevisionListController.lazyModel}"
+                             paginator="true"
+                             rows="10"
+                             currentPageReportTemplate="{currentPage} z {totalPages}"
+                             paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                             rowsPerPageTemplate="5,10,15"
+                             id="imageVersionRevisionTable"
+                             lazy="true"
+                             paginatorPosition="bottom"
+                >
+
+                    <p:column headerText="Aktualizacja"  style="width:100px; text-align: center;">
+                        <h:outputText value="#{imageVersionRevision.lastUpdate}" />
+                    </p:column>
+                    <p:column headerText="Obrazek"  style="width:100px; text-align: center;">
+                        <h:graphicImage
+                                rendered="#{imageVersionRevision.imgPath ne null}"
+                                style="max-width: 300px; max-height: 300px;"
+                                value="data:image/jpg;base64,#{productImageVersionRevisionListController.showImage2(imageVersionRevision.imgPath)}" />
+                    </p:column>
+                    <p:column headerText="Opis"  style="width:300px; text-align: center;">
+                        <h:outputText escape="false" value="#{imageVersionRevision.description}" />
+                    </p:column>
+                    <p:column headerText="Komentarz"  style="width:100px; text-align: center;">
+                        <h:outputText escape="false" value="#{imageVersionRevision.comment}" />
+                    </p:column>
+
+                    <p:column headerText="" style="width:40px; text-align: center;">
+                        <h:link title="Wersje" outcome="revisionDetails">
+                            <h:graphicImage library="sh" name="img/folder.png" />
+                            <f:param name="parentId" value="#{productImageVersionEditController.selected.id}" />
+                            <f:param name="idVersion" value="#{productImageVersionEditController.selected.id}" />
+                            <f:param name="hash" value="#{imageVersionRevision.hashGroup}" />
+                            <f:param name="id" value="#{imageVersionRevision.id}" />
+                            <f:param name="table_page" value="#{productImageVersionListController.tablePageInx}" />
+                        </h:link>
+                        <h:link title="Merge" outcome="mergeDetails">
+                            <h:graphicImage library="sh" name="img/folder.png" />
+                            <f:param name="parentId" value="#{productImageVersionEditController.selected.id}" />
+                            <f:param name="idVersion" value="#{productImageVersionEditController.selected.id}" />
+                            <f:param name="hash" value="#{imageVersionRevision.hashGroup}" />
+                            <f:param name="id" value="#{imageVersionRevision.id}" />
+                            <f:param name="table_page" value="#{productImageVersionListController.tablePageInx}" />
+                        </h:link>
+
+                        <p:commandLink styleClass=""
+                                       title="Opis"
+                                       action="#{productImageVersionRevisionListController.showImage(imageVersionRevision.id, productImageVersionEditController.selected.id, imageVersionRevision.imgPath,imageVersionRevision.description,imageVersionRevision.comment)}"
+                                       update="@([id$=dialogFormId])"
+                                       oncomplete="PF('showImageDialogW').show();">
+                            <h:graphicImage library="sh" name="img/edit.png" />
+                        </p:commandLink>
+                        <p:commandLink styleClass=""
+                                       title="Przetłumacz ponownie"
+                                       action="#{productImageVersionRevisionEditController.rerecognizeImageText(imageVersionRevision.id)}"
+                                       update="@([id$=imageVersionRevisionTable])">
+                            <h:graphicImage library="sh" name="img/ocr.png" />
+                        </p:commandLink>
+                    </p:column>
+                </p:dataTable>
+
+            </c:if>
+            <p:dialog id="deleteDialog"
+                      widgetVar="deleteDialogW"
+                      header="Usuń"
+                      modal="true"
+                      resizable="false"
+                      minHeight="200"
+                      appendTo="@(body)"
+                      width="400">
+                <h:panelGrid columns="3" id="display" columnClasses="alignTop,alignTop,alignTop"
+                             style="display: block;width: 270px; border: 0px black solid;">
+                    <h:outputLabel value="Czy usunąć '" />
+                    <h:outputLabel value="#{productImageVersionRevisionListController.selectedItem.id}" />
+                    <h:outputLabel value="'?" />
+                </h:panelGrid>
+                <p:separator />
+                <p:commandButton value="OK"
+                                 actionListener="#{productImageVersionRevisionListController.delete}"
+                                 partialSubmit="true"
+                                 ajax="true"
+                                 rendered="#{p:ifGranted('ROLE_ADMIN')}"
+                                 oncomplete="PF('deleteDialogW').hide();"
+                                 process="@this"
+                                 style="display: inline; margin: 0 auto 10px; width: 100px;"
+                                 update="@([id$=imageVersionRevisionTable])" />
+            </p:dialog>
+
+    </h:form>
+
+        <p:dialog id="showImageDialog"
+                  widgetVar="showImageDialogW"
+                  header="Obrazek"
+                  modal="true"
+                  resizable="false"
+                  maxHeight="600"
+                  appendTo="@(body)"
+                  maxWidth="1000">
+            <h:form id="dialogFormId">
+
+                <p:scrollPanel style="width:1200px;height:500px; border: 0px black solid;" >
+                <h:inputHidden value="#{productImageVersionEditController.selected.id}" id="revisionId" />
+                <h:panelGrid columns="2" id="displayImage" columnClasses="alignTop50,alignTop50"
+                             style="display: block;max-width: 1000px; border: 0px black solid;">
+                    <h:graphicImage  style="width: 100%"
+                                     value="data:image/jpg;base64,#{productImageVersionRevisionListController.updateVersionDialog.selectedImage}" />
+                    <p:inputTextarea
+                            style="width: 100%"
+                            value="#{productImageVersionRevisionListController.updateVersionDialog.selectedDescription}">
+                    </p:inputTextarea>
+
+                    <h:outputLabel value="Komentarz" />
+                    <p:inputTextarea
+                            style="width: 100%"
+                            value="#{productImageVersionRevisionListController.updateVersionDialog.selectedComment}">
+                    </p:inputTextarea>
+
+                </h:panelGrid>
+                </p:scrollPanel>
+                <p:separator />
+                <p:commandButton value="Zapisz"
+                                 action="#{productImageVersionRevisionListController.updateDescription()}"
+                                 oncomplete="PF('showImageDialogW').hide();"
+                                 ajax="true"
+                                 styleClass="appButton"
+                                 update="@([id$=form1])"/>
+            </h:form>
+        </p:dialog>
+
+
+
+</ui:define>
+        </ui:composition>

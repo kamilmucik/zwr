@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourcePerFileMappings">
+    <file url="file://$APPLICATION_CONFIG_DIR$/consoles/db/a1cd4176-5746-455e-a4db-f36a1e512a64/console.sql" value="a1cd4176-5746-455e-a4db-f36a1e512a64" />
+    <file url="file://$APPLICATION_CONFIG_DIR$/consoles/db/a1cd4176-5746-455e-a4db-f36a1e512a64/console_1.sql" value="a1cd4176-5746-455e-a4db-f36a1e512a64" />
+    <file url="file://$PROJECT_DIR$/db-unit/src/main/resources/db/migration/V2.5.2__add_revision_comment_field.sql" value="a1cd4176-5746-455e-a4db-f36a1e512a64" />
+  </component>
+</project>

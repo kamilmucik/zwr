@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/textextractor-common/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/textextractor-common/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/textextractor-common/textextractor-common-adapters/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/textextractor-common/textextractor-common-application/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/textextractor-common/textextractor-common-domain/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/textextractor-common/textextractor-common-entities/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/textextractor-docker/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/textextractor-docker/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/textextractor-docker/textextractor-image/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/textextractor-service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/textextractor-service/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/textextractor-service/textextractor-adapters/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/textextractor-service/textextractor-application/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/textextractor-service/textextractor-domain/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/textextractor-service/textextractor-entities/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/textextractor-service/textextractor-starter/src/main/java" charset="UTF-8" />
+  </component>
+</project>

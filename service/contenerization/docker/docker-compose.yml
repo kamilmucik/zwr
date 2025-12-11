@@ -1,0 +1,65 @@
+
+services:
+  rp-db:
+    image: mysql:8.0.32
+    container_name: rp-db
+    restart: always
+    #env_file: .env
+    environment:
+      - MYSQL_DATABASE=zwroty_e_strix_com
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=user
+      - MYSQL_ROOT_PASSWORD=root
+    expose:
+      - 3306
+    ports:
+      - 3306:3306
+    volumes:
+      - ./data/mysql/:/docker-entrypoint-initdb.d
+      - rp-dbdata8_0_25:/var/lib/mysql
+    command: [mysqld, --default-authentication-plugin=mysql_native_password, --character-set-server=utf8mb4, --collation-server=utf8mb4_unicode_ci, --innodb_monitor_enable=all, --max-connections=1001]
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 10s
+      retries: 10
+    networks:
+      rp-network:
+        aliases:
+          - db.rp.e-strix.pl
+  textextractor:
+    image: "registry.hub.docker.com/kamilmucik/textextractor:0.0.1-SNAPSHOT"
+    container_name: textextractor
+    #   platform: linux/x86_64
+#    platform: linux/amd64
+    expose:
+      - 8004
+    ports:
+      - 8004:8004
+  rp-server:
+    image: "registry.hub.docker.com/kamilmucik/return-parcel-server:2.5.1"
+    container_name: rp-server
+    #   platform: linux/x86_64
+    platform: linux/amd64
+    environment:
+      DEBUG_APP: 'true'
+    volumes:
+      - ./config/server/artifacts/:/opt/artifacts/
+      - ./logs/server/:/usr/local/tomcat/logs/
+      - ./data/server/:/opt/app/returnparcel/data/
+    expose:
+      - 8000
+      - 8080
+      - 9100
+    ports:
+      - 8000:8000
+      - 8080:8080
+      - 9100:9100
+    networks:
+      rp-network:
+
+volumes:
+  rp-dbdata8_0_25:
+
+networks:
+  rp-network:
+    driver: bridge

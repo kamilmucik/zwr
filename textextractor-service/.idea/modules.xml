@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/d3s.iml" filepath="$PROJECT_DIR$/d3s.iml" />
+      <module fileurl="file://$PROJECT_DIR$/textextractor-common/textextractor-common-application/textextractor-common-application.iml" filepath="$PROJECT_DIR$/textextractor-common/textextractor-common-application/textextractor-common-application.iml" />
+    </modules>
+  </component>
+</project>

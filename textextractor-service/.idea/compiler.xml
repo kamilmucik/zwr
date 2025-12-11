@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="textextractor-adapters" />
+        <module name="textextractor-application" />
+        <module name="textextractor-domain" />
+        <module name="textextractor-common-adapters" />
+        <module name="textextractor-common-domain" />
+        <module name="textextractor-common-application" />
+        <module name="textextractor-entities" />
+        <module name="d3s-docker-web-client" />
+        <module name="textextractor-common-entities" />
+      </profile>
+      <profile name="Annotation profile for textextractor" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <processor name="lombok.launch.AnnotationProcessorHider$AnnotationProcessor" />
+        <module name="textextractor-starter" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="d3s-docker-tools" target="23" />
+      <module name="textextractor-image" target="23" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="common" options="-parameters" />
+      <module name="d3s" options="-parameters" />
+      <module name="d3s-docker-web-client" options="-parameters" />
+      <module name="textextractor-adapters" options="-parameters" />
+      <module name="textextractor-application" options="-parameters" />
+      <module name="textextractor-common-adapters" options="-parameters" />
+      <module name="textextractor-common-application" options="-parameters" />
+      <module name="textextractor-common-domain" options="-parameters" />
+      <module name="textextractor-common-entities" options="-parameters" />
+      <module name="textextractor-docker" options="-parameters" />
+      <module name="textextractor-domain" options="-parameters" />
+      <module name="textextractor-entities" options="-parameters" />
+      <module name="textextractor-service" options="-parameters" />
+      <module name="textextractor-starter" options="-parameters" />
+    </option>
+  </component>
+</project>
