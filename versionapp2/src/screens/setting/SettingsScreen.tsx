@@ -10,11 +10,13 @@ import styles from './SettingsSheetStyles';
 
 const useSettingsFormState = () => {
   const appCtx = useContext(AppContext);
+  const [author, setAuthor] = useState(appCtx.settingsAuthor);
   const [destinationURL, setDestinationURL] = useState(appCtx.settingsDestinationURL);
   const [isDebugMode, setDebugMode] = useState(appCtx.isDebugMode);
   const [submit, setSubmit] = useState(false);
 
   let destinationURLValid = false;
+  let authorValid = false;
   let isDebugModeValid = false;
 
   async function saveData(key, value) {
@@ -27,6 +29,11 @@ const useSettingsFormState = () => {
       set: setDestinationURL,
       valid: destinationURLValid
     },
+    author: {
+      value: author,
+      set: setAuthor,
+      valid: authorValid
+    },
     isDebugMode: {
       value: isDebugMode,
       set: setDebugMode,
@@ -37,10 +44,12 @@ const useSettingsFormState = () => {
       set: () => {
           setSubmit(true);
           appCtx.setSettingsDestinationURL(destinationURL);
+          appCtx.setSettingsAuthor(author);
           appCtx.setDebugMode(isDebugMode);
           
           saveData('@storage_versions2',  JSON.stringify({
             destinationURL: destinationURL,
+            author: author,
             isDebugMode: isDebugMode
           }));
 
@@ -56,7 +65,7 @@ const useSettingsFormState = () => {
 }
 
 const SettingsScreen = () => {
-  const { destinationURL, isDebugMode, submit} = useSettingsFormState();
+  const { destinationURL, isDebugMode, author, submit} = useSettingsFormState();
 
   return (
     <ScrollView  >
@@ -69,6 +78,11 @@ const SettingsScreen = () => {
             label="API Url" 
             onChange={destinationURL.set} 
             value={destinationURL.value}
+            />
+          <InputTextField 
+            label="Autor" 
+            onChange={author.set} 
+            value={author.value}
             />
           <InputSwitch 
             description="Tryb debug" 

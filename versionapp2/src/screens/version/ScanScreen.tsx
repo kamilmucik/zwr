@@ -52,7 +52,10 @@ const ScanScreen = ({navigation, route}) => {
     }
 
   async function loadProperties() {
-      appCtx.setSettingsDestinationURL(BASE_API_URL);
+      const _value = await AsyncStorage.getItem('@storage_versions2');
+      let parsed = JSON.parse(_value);
+      appCtx.setSettingsAuthor(parsed.author);
+      appCtx.setSettingsDestinationURL(parsed.destinationURL);
   }
 
 
@@ -102,10 +105,10 @@ const ScanScreen = ({navigation, route}) => {
       setIsLoaded(true);
     }
     if (singleResult === undefined){
-      showMessage({
-        message: "Brak w bazie!",
-        type: "warning",
-        });
+      // showMessage({
+      //   message: "Brak w bazie!",
+      //   type: "warning",
+      //   });
     } else {
       setEanValue('');
       setEanScannerValue('');

@@ -136,6 +136,7 @@ const ScanImageScreen = ({navigation, route}) => {
             imgBas64: fileBase64Front,
             merge: mergeVerImages,
             comment: ownComment,
+            author: appCtx.settingsAuthor,
             externalOCRCheck: aiOCR
         });
         showMessage({

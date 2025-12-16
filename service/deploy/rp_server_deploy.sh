@@ -3,8 +3,9 @@
 FILENAME=$1
 MODULE=$2
 VERSION=$3
+VERSION_OLD=$4
 
-echo "\n1. Docker Deploy Front "${FILENAME}" "${MODULE}" "${VERSION}
+echo "\n1. Docker Deploy Front "${FILENAME}" "${MODULE}" "${VERSION}" "${VERSION_OLD}
 #docker images
 #
 #rm -rf /tmp/d3s/
@@ -13,7 +14,7 @@ cd /tmp/rp/
 
 docker stop ${MODULE}
 docker rm ${MODULE}
-docker rmi registry.hub.docker.com/kamilmucik/${MODULE}:${VERSION}
+docker rmi registry.hub.docker.com/kamilmucik/${MODULE}:${VERSION_OLD}
 
 docker load -i ${FILENAME}
 

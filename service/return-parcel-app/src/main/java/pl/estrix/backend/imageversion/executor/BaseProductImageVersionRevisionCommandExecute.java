@@ -37,6 +37,7 @@ public class BaseProductImageVersionRevisionCommandExecute extends BaseCommandEx
         entity.setProductImageVersion(version);
         entity.setOrderTimestamp(dto.getOrderTimestamp());
         entity.setComment(dto.getComment());
+        entity.setAuthor(dto.getAuthor());
         return entity;
     }
 
@@ -52,6 +53,7 @@ public class BaseProductImageVersionRevisionCommandExecute extends BaseCommandEx
         dto.setLastUpdate(entity.getLastUpdate());
         dto.setOrderTimestamp(entity.getOrderTimestamp());
         dto.setComment(entity.getComment());
+        dto.setAuthor(entity.getAuthor());
         dto.setVersionId(entity.getProductImageVersion().getId());
         return dto;
     }
