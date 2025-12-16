@@ -21,7 +21,7 @@
       tags: lsout
       register: myshell_output
     - name: Execute the script
-      command: timeout 240 sh /tmp/rp/rp_server_deploy.sh {{filename}} {{module}} {{version}}
+      command: timeout 240 sh /tmp/rp/rp_server_deploy.sh {{filename}} {{module}} {{version}} {{old_version}}
       become: yes
       become_method: sudo
       become_user: root

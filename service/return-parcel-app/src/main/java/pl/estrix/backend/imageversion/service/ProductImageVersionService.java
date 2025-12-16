@@ -236,6 +236,7 @@ public class ProductImageVersionService {
                 .hashGroup(dto.getHashGroup())
                 .comment(dto.getComment())
                 .orderTimestamp(dto.getOrderTimestamp())
+                .author(dto.getAuthor())
                 .build();
     }
 
@@ -301,6 +302,7 @@ public class ProductImageVersionService {
         dto.setImgPath(path);
         dto.setMain(true);
         dto.setComment(dto.getComment());
+//        dto.setAuthor(dto.getAuthor());
 
 //        boolean changesDetected = false;
         dto.setHashGroup(dto.getHashGroup() != null? dto.getHashGroup() : UUID.randomUUID().toString());

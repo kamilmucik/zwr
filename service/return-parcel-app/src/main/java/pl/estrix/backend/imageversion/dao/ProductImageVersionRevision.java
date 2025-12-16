@@ -47,6 +47,9 @@ public class ProductImageVersionRevision extends AuditableEntity {
     @Column(name = "ver_comment", length = 4096)
     private String comment;
 
+    @Column(name = "ver_author", length = 32)
+    private String author;
+
     @Column(name = "is_main", columnDefinition = "bit(1) default 0")
     private boolean main;
 
