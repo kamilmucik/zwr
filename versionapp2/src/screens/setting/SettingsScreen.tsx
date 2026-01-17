@@ -11,12 +11,14 @@ import styles from './SettingsSheetStyles';
 const useSettingsFormState = () => {
   const appCtx = useContext(AppContext);
   const [author, setAuthor] = useState(appCtx.settingsAuthor);
+  const [pageSize, setPageSize] = useState(appCtx.settingsPageSize);
   const [destinationURL, setDestinationURL] = useState(appCtx.settingsDestinationURL);
   const [isDebugMode, setDebugMode] = useState(appCtx.isDebugMode);
   const [submit, setSubmit] = useState(false);
 
   let destinationURLValid = false;
   let authorValid = false;
+  let pageSizeValid = false;
   let isDebugModeValid = false;
 
   async function saveData(key, value) {
@@ -34,6 +36,11 @@ const useSettingsFormState = () => {
       set: setAuthor,
       valid: authorValid
     },
+    pageSize: {
+      value: pageSize,
+      set: setPageSize,
+      valid: pageSizeValid
+    },
     isDebugMode: {
       value: isDebugMode,
       set: setDebugMode,
@@ -45,11 +52,13 @@ const useSettingsFormState = () => {
           setSubmit(true);
           appCtx.setSettingsDestinationURL(destinationURL);
           appCtx.setSettingsAuthor(author);
+          appCtx.setSettingsPageSize(pageSize);
           appCtx.setDebugMode(isDebugMode);
           
           saveData('@storage_versions2',  JSON.stringify({
             destinationURL: destinationURL,
             author: author,
+            pageSize: pageSize,
             isDebugMode: isDebugMode
           }));
 
@@ -65,7 +74,7 @@ const useSettingsFormState = () => {
 }
 
 const SettingsScreen = () => {
-  const { destinationURL, isDebugMode, author, submit} = useSettingsFormState();
+  const { destinationURL, isDebugMode, author, pageSize, submit} = useSettingsFormState();
 
   return (
     <ScrollView  >
@@ -83,6 +92,12 @@ const SettingsScreen = () => {
             label="Autor" 
             onChange={author.set} 
             value={author.value}
+            />
+          <InputTextField 
+            label="Rozmiar stronicowania" 
+            onChange={pageSize.set} 
+            value={pageSize.value}
+            keyboardType='numeric'
             />
           <InputSwitch 
             description="Tryb debug" 

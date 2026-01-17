@@ -46,15 +46,17 @@ const ScanScreen = ({navigation, route}) => {
     const {posUpResult} = useCustomPost('productimageversion/change-order', posUpData, 'POST', "FETCH_POSUP_SUCCESS");
 
     const [modalVisible, setModalVisible] = useState(false);
+    const [currentPage, setCurrentPage] = useState(1);
 
     const fetchProduct = async (ean) => {
-      setQuery('productimageversion/findbyean?ean='+ean);
+      setQuery('productimageversion/findbyean?ean='+ean+'&page='+currentPage+'&pageSize='+appCtx.settingsPageSize);
     }
 
   async function loadProperties() {
       const _value = await AsyncStorage.getItem('@storage_versions2');
       let parsed = JSON.parse(_value);
       appCtx.setSettingsAuthor(parsed.author);
+      appCtx.setSettingsPageSize(parsed.pageSize);
       appCtx.setSettingsDestinationURL(parsed.destinationURL);
   }
 
@@ -81,14 +83,14 @@ const ScanScreen = ({navigation, route}) => {
 
 
   useEffect(() => {
-    setQuery('productimageversion/findbyean?ean='+singleResult?.ean+'&ts='+Date.now());
+    setQuery('productimageversion/findbyean?ean='+singleResult?.ean+'&page='+currentPage+'&pageSize='+appCtx.settingsPageSize+'&ts='+Date.now());
   }, [route.params?.itemId]);
 
   
 
   const handleRefresh = () => {
     // console.log("refresh: " + singleResult?.ean);
-    setQuery('productimageversion/findbyean?ean='+singleResult?.ean+'&ts='+Date.now());
+    setQuery('productimageversion/findbyean?ean='+singleResult?.ean+'&page='+currentPage+'&pageSize='+appCtx.settingsPageSize+'&ts='+Date.now());
   }
 
   const handleSetEAN =  () => {
@@ -154,7 +156,6 @@ const ScanScreen = ({navigation, route}) => {
       <ScrollView  refreshControl={
         <RefreshControl refreshing={loading} onRefresh={handleRefresh} />
       }>
-
 <View>
 
 <Modal
@@ -164,10 +165,6 @@ const ScanScreen = ({navigation, route}) => {
     <ImageViewer imageUrls={selectedImage} />
 </Modal>
 </View>
-
-
-
-
         <View  style={styles.mainContainer}>
             <View style={styles.rowContainer} >
               <View style={[styles.inputSection]}>
@@ -208,48 +205,48 @@ const ScanScreen = ({navigation, route}) => {
             <ActivityIndicator size='large'/>
           </View>}
           
-          <DataTable  >
-            <DataTable.Row >
-              <DataTable.Cell >Numer artykułu</DataTable.Cell>
-              <DataTable.Cell >{singleResult?.artNumber}</DataTable.Cell>
-            </DataTable.Row>
-            <DataTable.Row >
-              <DataTable.Cell >EAN</DataTable.Cell>
-              <DataTable.Cell >
-                <View style={{ minHeight: 20, maxWidth:180,
-                      alignItems: 'center',
-                      color: 'black',
-                      justifyContent: 'flex-start',
-                      flexDirection: "column",
-                      flexWrap: "wrap-reverse",
-                    }}>
-                      <Text style={{
-                        color: 'black',
-                      }}>
-                        {singleResult?.ean}
-                      </Text>
-                    </View>
-                </DataTable.Cell>
-            </DataTable.Row>
-            <DataTable.Row >
-              <DataTable.Cell>Nazwa</DataTable.Cell>
-              <DataTable.Cell>
-                <View style={{ minHeight: 20, maxWidth:180,
-                      alignItems: 'center',
-                      color: 'black',
-                      justifyContent: 'flex-start',
-                      flexDirection: "column",
-                      flexWrap: "wrap-reverse",
-                    }}>
-                      <Text style={{
-                        color: 'black',
-                      }}>
-                        {singleResult?.title}
-                      </Text>
-                    </View>
-              </DataTable.Cell>
-            </DataTable.Row>
-          </DataTable>
+    <DataTable  >
+      <DataTable.Row >
+        <DataTable.Cell >Numer artykułu</DataTable.Cell>
+        <DataTable.Cell >{singleResult?.artNumber}</DataTable.Cell>
+      </DataTable.Row>
+      <DataTable.Row >
+        <DataTable.Cell >EAN</DataTable.Cell>
+        <DataTable.Cell >
+          <View style={{ minHeight: 20, maxWidth:180,
+                alignItems: 'center',
+                color: 'black',
+                justifyContent: 'flex-start',
+                flexDirection: "column",
+                flexWrap: "wrap-reverse",
+              }}>
+                <Text style={{
+                  color: 'black',
+                }}>
+                  {singleResult?.ean}
+                </Text>
+              </View>
+          </DataTable.Cell>
+      </DataTable.Row>
+      <DataTable.Row >
+        <DataTable.Cell>Nazwa</DataTable.Cell>
+        <DataTable.Cell>
+          <View style={{ minHeight: 20, maxWidth:180,
+                alignItems: 'center',
+                color: 'black',
+                justifyContent: 'flex-start',
+                flexDirection: "column",
+                flexWrap: "wrap-reverse",
+              }}>
+                <Text style={{
+                  color: 'black',
+                }}>
+                  {singleResult?.title}
+                </Text>
+              </View>
+        </DataTable.Cell>
+      </DataTable.Row>
+    </DataTable>
 
           {isLoaded ? (
             <View >

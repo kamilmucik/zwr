@@ -37,13 +37,13 @@ const TabNavigator = ({route, navigation}) => {
           }} 
           
           />
-        <Tab.Screen 
+        {/* <Tab.Screen 
           name="OCR" 
           component={OCRTestScreen} 
           options={{
             tabBarLabel: 'OCR',
             tabBarIcon: ({color}) => screenOptions('ocr', color),
-          }}/>
+          }}/> */}
         <Tab.Screen 
           name="Ustawienia" 
           component={SettingsScreen} 
