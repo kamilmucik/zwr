@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.estrix.backend.category.dto.CategoryGroupDto;
 import pl.estrix.backend.category.service.CategoryGroupService;
+import pl.estrix.common.exception.ReturnParcelRESTException;
 
 import java.util.List;
 
@@ -20,6 +21,7 @@ public class CategoryController {
     @RequestMapping(value="/list", method= RequestMethod.GET)
     public List<CategoryGroupDto> getCategoryGroup() {
         return categoryGroupService.getCategoryGroup();
+//        throw new ReturnParcelRESTException("test coś poszło nie tak: %s", 123);
     }
 
     @RequestMapping(value = "/get/{id}", method = RequestMethod.GET)

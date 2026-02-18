@@ -52,6 +52,7 @@ public class ProductImageVersionRepositoryImpl extends QueryDslRepositorySupport
     @Override
     public long findCount(ProductImageVersionSearchCriteriaDto searchCriteria) {
         JPQLQuery query = getQueryForFind(searchCriteria);
+//        addPagingCriteriaToQuery(query, null);
         return query.count();
     }
 

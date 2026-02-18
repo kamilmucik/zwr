@@ -3,12 +3,35 @@ services:
   textextractor:
     image: "registry.hub.docker.com/kamilmucik/textextractor:0.0.1-SNAPSHOT"
     container_name: textextractor
-    #   platform: linux/x86_64
-#    platform: linux/amd64
+    environment:
+      - AWS_ACCESS_KEY=admin
+      - AWS_SECRET_KEY=admin
+      - GCP_ACCESS_KEY=admin
+      - GCP_SECRET_KEY=admin
     expose:
       - 8004
     ports:
       - 8004:8004
+  mongodb:
+    image: mongo:4.2.3-bionic
+    container_name: mongodb
+    ports:
+      - 27017:27017
+    environment:
+      - MONGO_INITDB_DATABASE=test
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=admin
+    volumes:
+      # seeding scripts
+      - ./config/mongo-entrypoint:/docker-entrypoint-initdb.d
+      # named volumes
+      - mongodb:/data/db
+      - mongoconfig:/data/configdb
+
+volumes:
+  # default dir on Ubuntu: /var/lib/docker/volumes
+  mongodb:
+  mongoconfig:
 
 networks:
   rp-network:

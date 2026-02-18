@@ -22,4 +22,7 @@ public class ProductImageVersionDto extends BaseEntityDto<Long> {
 
     private List<ProductImageVersionRevisionDto> revisions = new ArrayList<>();
 
+    private Integer totalItems;
+    private Integer totalPages;
+
 }

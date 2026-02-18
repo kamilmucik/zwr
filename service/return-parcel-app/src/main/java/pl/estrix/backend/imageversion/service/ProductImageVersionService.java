@@ -19,13 +19,16 @@ import pl.estrix.common.base.ListResponseDto;
 import pl.estrix.common.dto.*;
 import pl.estrix.common.dto.model.*;
 import pl.estrix.common.exception.CustomException;
+import pl.estrix.common.exception.ReturnParcelRESTException;
 import pl.estrix.common.util.CustomStringUtils;
 import pl.estrix.restapi.PrintLabelRestController;
 
+import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
@@ -39,9 +42,7 @@ import java.util.stream.Collectors;
 @Service
 public class ProductImageVersionService {
 
-
     private static Logger LOG = LoggerFactory.getLogger(ProductImageVersionService.class);
-
 
     private static final String PATH_IDENTIFIER = "%s/%s";
     private static final String PATH_DB_IDENTIFIER = "%s_%s/%s.jpg";
@@ -78,6 +79,18 @@ public class ProductImageVersionService {
 
     public List getConcatenateList(String ean){
         return concatenateMap.get(ean);
+    }
+
+    public ProductImageVersionService (){
+
+    }
+
+    @PostConstruct
+    public void init(){
+        SettingDto versionDirectorySettingDto = readSettingCommandExecutor.findByName("versionDirectory");
+        if (versionDirectorySettingDto != null){
+            filePath = versionDirectorySettingDto.getValue();
+        }
     }
 
     public ProductImageVersionRevisionDto addToConcatenateList(ProductImageVersionRevisionDto imageVersion){
@@ -144,9 +157,6 @@ public class ProductImageVersionService {
         return selected;
     }
 
-
-
-//    @Transactional
     public ProductImageVersionRevisionDto getRevisionItem(Long id){
         return readRevisionExecutor.findById(id);
     }
@@ -161,6 +171,7 @@ public class ProductImageVersionService {
         }
         return temp;
     }
+
     @Transactional
     public ProductImageVersionRevisionDto saveOrUpdate(ProductImageVersionRevisionDto dto){
         ProductImageVersionRevisionDto temp = null;
@@ -178,17 +189,28 @@ public class ProductImageVersionService {
         updateRevisionExecutor.setMainImage(id);
     }
 
-    public RestProductImageVersionDto findByEAN(String ean) {
-        ListResponseDto<ProductImageVersionDto> revisionDto = getProductImageVersionDtoListResponseDto(ean);
-        return new RestProductImageVersionDto(revisionDto.getData());
+    public RestProductImageVersionDto findByEAN(String ean, Integer pageNumber,Integer pageSize) {
+        ListResponseDto<ProductImageVersionDto> revisionDto = getProductImageVersionDtoListResponseDto(ean, pageNumber, pageSize);
+
+        revisionDto.setTotalPages(calculateTotalPages(revisionDto.getTotalCount(), pageSize));
+
+        return new RestProductImageVersionDto(revisionDto.getData(), revisionDto.getTotalCount(), calculateTotalPages(revisionDto.getTotalCount(), pageSize));
     }
 
-    private ListResponseDto<ProductImageVersionDto> getProductImageVersionDtoListResponseDto(String ean) {
+    public int calculateTotalPages(int itemCounter, int pageSize) {
+        if (pageSize <= 0) {
+//            throw new IllegalArgumentException("Rozmiar strony musi być większy od zera");
+            throw new ReturnParcelRESTException("Rozmiar strony musi być większy od zera");
+        }
+        return (int) Math.ceil((double) itemCounter / pageSize);
+    }
+
+    private ListResponseDto<ProductImageVersionDto> getProductImageVersionDtoListResponseDto(String ean, Integer pageNumber,Integer pageSize) {
         PagingCriteria pCriteria = PagingCriteria
                 .builder()
                 .start(0)
                 .page(0)
-                .limit(5)
+                .limit(1)
                 .build();
         ProductImageVersionSearchCriteriaDto searchCriteriaDto = ProductImageVersionSearchCriteriaDto
                 .builder()
@@ -200,15 +222,16 @@ public class ProductImageVersionService {
 
         ListResponseDto<ProductImageVersionDto> revisionDto = this.getItems(searchCriteriaDto, pCriteria);
 
+
         revisionDto.getData().stream().forEach(  image -> {
             ProductImageVersionRevisionSearchCriteriaDto searchCriteria = new ProductImageVersionRevisionSearchCriteriaDto();
             searchCriteria.setMainOnly(true);
             searchCriteria.setVersionId(image.getId());
             PagingCriteria pagingCriteria = PagingCriteria
                     .builder()
-                    .start(0)
+                    .start(pageNumber*pageSize)
                     .page(0)
-                    .limit(40)
+                    .limit(pageSize)
                     .build();
             ListResponseDto<ProductImageVersionRevisionDto> responseDto = this.getItems(searchCriteria, pagingCriteria);
             List<ProductImageVersionRevisionDto> baseList = responseDto
@@ -221,6 +244,8 @@ public class ProductImageVersionService {
                     )
                     .collect(Collectors.toList());
             image.getRevisions().addAll(baseList);
+            image.setTotalItems(responseDto.getTotalCount());
+            image.setTotalPages(calculateTotalPages(responseDto.getTotalCount(), pageSize));
         });
 
         return revisionDto;
@@ -241,11 +266,6 @@ public class ProductImageVersionService {
     }
 
     public RestProductImageVersionRevisionDto deleteVersion(ProductImageVersionRevisionDto dto) {
-        SettingDto versionDirectorySettingDto = readSettingCommandExecutor.findByName("versionDirectory");
-        if (versionDirectorySettingDto != null){
-            filePath = versionDirectorySettingDto.getValue();
-        }
-
         try {
             ProductImageVersionRevisionDto dtoToDelete = readRevisionExecutor.findByHash(dto.getHashGroup());
             LOG.debug("deleteVersion[{}]: {}", dto.getHashGroup(), dtoToDelete.getId());
@@ -259,11 +279,12 @@ public class ProductImageVersionService {
                 updateRevisionExecutor.setMainImage(mainCandidate.getId());
             }
         } catch (IOException e) {
-            return RestProductImageVersionRevisionDto
-                    .builder()
-                    .message("Błąd usuwania obrazka")
-                    .dto(ProductImageVersionRevisionDto.builder().orderTimestamp(new Date().getTime()).build())
-                    .build();
+            throw new ReturnParcelRESTException("Błąd usuwania obrazka");
+//            return RestProductImageVersionRevisionDto
+//                    .builder()
+//                    .message("Błąd usuwania obrazka")
+//                    .dto(ProductImageVersionRevisionDto.builder().orderTimestamp(new Date().getTime()).build())
+//                    .build();
         }
         return RestProductImageVersionRevisionDto
                 .builder()
@@ -282,19 +303,16 @@ public class ProductImageVersionService {
     }
 
     public RestProductImageVersionRevisionDto addVersion(ProductImageVersionRevisionDto dto) {
-        SettingDto versionDirectorySettingDto = readSettingCommandExecutor.findByName("versionDirectory");
-        if (versionDirectorySettingDto != null){
-            filePath = versionDirectorySettingDto.getValue();
-        }
         String path = String.format(PATH_DB_IDENTIFIER, dto.getArtNumber().trim(), dto.getEan().trim(),dateFormatter.format(new Date()));
         File file = new File(String.format(PATH_IDENTIFIER,filePath,path));
         try {
             FileUtils.writeByteArrayToFile(file, Base64.getDecoder().decode(dto.getImgBas64()));
         } catch (IOException e) {
-            return RestProductImageVersionRevisionDto
-                    .builder()
-                    .message("Błąd dodawania obrazka")
-                    .build();
+            throw new ReturnParcelRESTException("Błąd dodawania obrazka");
+//            return RestProductImageVersionRevisionDto
+//                    .builder()
+//                    .message("Błąd dodawania obrazka")
+//                    .build();
         }
 
         dto.setLastUpdate(LocalDateTime.now());
@@ -303,8 +321,6 @@ public class ProductImageVersionService {
         dto.setMain(true);
         dto.setComment(dto.getComment());
 //        dto.setAuthor(dto.getAuthor());
-
-//        boolean changesDetected = false;
         dto.setHashGroup(dto.getHashGroup() != null? dto.getHashGroup() : UUID.randomUUID().toString());
 
         if (dto.isExternalOCRCheck()){
@@ -315,33 +331,7 @@ public class ProductImageVersionService {
             dto.setDescription(dto.getDescription());
         }
 
-
         ProductImageVersionRevisionDto selected = mapWithBas64Img(createRevisionExecutor.create(dto));
-//        selected.setChangesDetected(changesDetected);
-//        selected.setComment(dto.getComment());
-//
-//
-//        if (!StringUtils.isEmpty(dto.getHashGroup())) {
-////            ProductImageVersionRevisionDto lastVersion = readRevisionExecutor.findByHash(dto.getHashGroup());
-////            {
-//                String currNoHTML = CustomStringUtils.prepareStringToCompare(dto.getDescription());
-//                dto.setDescription(currNoHTML);
-//                selected.setDescription(currNoHTML);
-////            }
-//        }
-
-
-
-        //mergowanie obrazkow
-//        if (dto.isMerge()){
-//            List tmpList = concatenateMap.getOrDefault(dto.getEan(), new ArrayList<>());
-//
-//            dto.setLastUpdate(LocalDateTime.now());
-//            dto.setId(tmpList.size() + 1L);
-//            tmpList.add(dto);
-//            concatenateMap.put(dto.getEan(), tmpList);
-//        }
-
 
         return RestProductImageVersionRevisionDto
                     .builder()
@@ -366,18 +356,19 @@ public class ProductImageVersionService {
     }
 
     public void updateProductImageVersionRevisionDescription(Long id, String description, String comment){
-
         updateRevisionExecutor.updateDescription(id, description, comment);
     }
 
-    public InputStream getLastImage(String imageHash) throws IOException {
-        SettingDto versionDirectorySettingDto = readSettingCommandExecutor.findByName("versionDirectory");
-        if (versionDirectorySettingDto != null){
-            filePath = versionDirectorySettingDto.getValue();
-        }
-        String path = new String(Base64.getDecoder().decode(imageHash));
+    public InputStream getLastImage(String imageHash)  {
+        String path = new String(Base64.getDecoder().decode(imageHash), StandardCharsets.UTF_8);
 
-        return Files.newInputStream(Paths.get(filePath,path));
+        try {
+            return Files.newInputStream(Paths.get(filePath,path));
+        } catch (IOException e) {
+//            throw new RuntimeException(e);
+            e.printStackTrace();
+            throw new ReturnParcelRESTException(e.getMessage());
+        }
     }
 
 }

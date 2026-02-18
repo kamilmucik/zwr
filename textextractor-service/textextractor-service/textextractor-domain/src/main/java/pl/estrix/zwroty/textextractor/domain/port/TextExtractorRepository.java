@@ -8,4 +8,5 @@ public interface TextExtractorRepository {
     void save(UUID requestId, List<String> words);
 
     List<String> getExtractedWords(UUID requestId);
+
 }

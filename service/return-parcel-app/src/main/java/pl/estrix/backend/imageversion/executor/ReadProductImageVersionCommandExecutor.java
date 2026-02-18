@@ -20,7 +20,10 @@ public class ReadProductImageVersionCommandExecutor extends BaseProductImageVers
                 .map(this::mapEntityToDto)
                 .collect(Collectors.toList());
 
-        return createListResponseDto(pagingCriteria, () -> queryResultList, () -> (int) repository.findCount(searchCriteria));
+        return createListResponseDto(
+                pagingCriteria,
+                () -> queryResultList,
+                () -> (int) repository.findCount(searchCriteria));
     }
 
 

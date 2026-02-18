@@ -24,14 +24,14 @@ hibernate:
         autodetection: class
 logging:
     level:
-        ROOT: ERROR
+        ROOT: INFO
         org:
             springframework:
-                data: DEBUG
+                data: INFO
             hibernate:
-                type: DEBUG
+                type: INFO
         pl:
-            estrix: DEBUG
+            estrix: INFO
     pattern:
         file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
     file: logs/application.log

@@ -1,6 +1,5 @@
 package pl.estrix.zwroty.textextractor.domain;
 
-import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
@@ -23,22 +22,15 @@ import java.util.stream.Collectors;
 @Slf4j
 public class TextExtractorDomainService {
 
-//    @Value("${aws.access.key}")
-//    private String AWS_ACCESS_KEY_ID;
-//    @Value("${aws.secret.key}")
-//    private String AWS_SECRET_ACCESS_KEY;
+    private final TextractClient textractClient;
 
-    private static final String AWS_ACCESS_KEY_ID = "xxx";
-    private static final String AWS_SECRET_ACCESS_KEY = "xxx";
-
-
-    AwsBasicCredentials awsCredentials = AwsBasicCredentials.create(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY);
-
-    TextractClient textractClient = TextractClient.builder()
-            .region(Region.EU_CENTRAL_1)
-            .credentialsProvider(StaticCredentialsProvider.create(awsCredentials))
-            .build();
-
+    public TextExtractorDomainService(final String awsAccessKeyId, final String awsSecretAccessKey) {
+        AwsBasicCredentials awsCredentials = AwsBasicCredentials.create(awsAccessKeyId, awsSecretAccessKey);
+        textractClient = TextractClient.builder()
+                .region(Region.EU_CENTRAL_1)
+                .credentialsProvider(StaticCredentialsProvider.create(awsCredentials))
+                .build();
+    }
 
     public List<String> shouldExtractTextFromImageTest(String base64Image) {
         ByteBuffer imageBytes;
@@ -82,6 +74,4 @@ public class TextExtractorDomainService {
                 .map(Block::text)
                 .collect(Collectors.toList());
     }
-
-
 }

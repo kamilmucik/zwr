@@ -37,7 +37,7 @@ const CustomImage = (props : RowViewProps) => {
   const [modalVisible, setModalVisible] = useState(false);
 
   const handleZoomClick = () => {
-    props.onPressZoom(BASE_API_URL+'/productimageversion/get-image?imageHash='+props.hash+'&ts='+Date.now());
+    props.onPressZoom(appCtx.settingsDestinationURL+'/productimageversion/get-image?imageHash='+props.hash+'&ts='+Date.now());
   };
   const handlePosUpClick = () => {
     props.onPressPosUp(props.hashGroup);
@@ -56,7 +56,7 @@ const CustomImage = (props : RowViewProps) => {
 
   useEffect(() => {
     setLoadImage(true);
-    loadImage(BASE_API_URL+'/productimageversion/get-image?imageHash='+props.hash+'&ts='+props.refreshTs);
+    loadImage(appCtx.settingsDestinationURL+'/productimageversion/get-image?imageHash='+props.hash+'&ts='+props.refreshTs);
   }, [props.hash, props.refreshTs]);
 
 
@@ -160,10 +160,7 @@ const styles = StyleSheet.create({
   rowContainer: {
     marginBottom: moderateScale(30),
     flexDirection: 'row',
-    justifyContent: 'center',
-    // borderBottomColor: '#e1f5fe',
-    // borderBottomWidth: 1,
-    // backgroundColor: '#e1f5fe',
+    justifyContent: 'center'
   },
   text: {
     ctintColor: Colors.redThemeColor,

@@ -185,12 +185,6 @@ const ScanImageScreen = ({navigation, route}) => {
                 </View>
                 {loading && <ActivityIndicator size='large'/>}
                 {changesDetected && <Text style={styles.textStyleWarn}>Uwaga, zmiany w treści!</Text>}
-
-                {/*<InputSwitch*/}
-                {/*  description="Połącz"*/}
-                {/*  onChange={handleMergeVerImages}*/}
-                {/*  value={mergeVerImages}*/}
-                {/*  />*/}
                 <InputSwitch
                     description="AI OCR"
                     onChange={handleAIOCR}
@@ -226,9 +220,10 @@ const ScanImageScreen = ({navigation, route}) => {
                 </View>
                 <View >
                     <InputTextArea
-                        label="Komentarz" 
+                        label="Komentarz"
                         onChange={text => setOwnComment(text)}
                         value={ownComment}
+                        description='Komentarz'
                     />
                 </View>
 
