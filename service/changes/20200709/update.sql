@@ -1,1 +1,0 @@
-alter table shipment_product modify ean varchar(1024) null default null;

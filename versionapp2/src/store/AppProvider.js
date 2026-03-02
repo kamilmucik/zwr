@@ -7,6 +7,7 @@ function AppProvider({children}) {
   const [settingsFastQuizDepartment, setContextSettingsFastQuizDepartment] = useState({});
   const [settingsDestinationURL, setContextSettingsDestinationURL] = useState('');
   const [settingsAuthor, setContextSettingsAuthor] = useState('');
+  const [settingsPageSize, setContextSettingsPageSize] = useState('');
   const [isDebugMode, setContextDebugMode] = useState(0);
 
   function setSettingsFastQuizDepartment(val){
@@ -17,6 +18,9 @@ function AppProvider({children}) {
   }
   function setSettingsAuthor(val){
     setContextSettingsAuthor(val);
+  }
+  function setSettingsPageSize(val){
+    setContextSettingsPageSize(val);
   }
   function addToCache(query, data){
     cache.current[query] = {
@@ -35,11 +39,13 @@ function AppProvider({children}) {
     settingsFastQuizDepartment: settingsFastQuizDepartment,
     settingsDestinationURL: settingsDestinationURL,
     settingsAuthor: settingsAuthor,
+    settingsPageSize: settingsPageSize,
     isDebugMode: isDebugMode,
 
     setSettingsFastQuizDepartment: setSettingsFastQuizDepartment,
     setSettingsDestinationURL: setSettingsDestinationURL,
     setSettingsAuthor: setSettingsAuthor,
+    setSettingsPageSize: setSettingsPageSize,
     existInCache: existInCache,
     addToCache: addToCache,
     setDebugMode: setDebugMode,

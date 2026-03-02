@@ -24,6 +24,8 @@ import pl.estrix.backend.ocr.service.dto.TextExtractorPostRequest;
 import pl.estrix.backend.ocr.service.dto.TextExtractorPostResponse;
 import pl.estrix.backend.settings.executor.ReadSettingCommandExecutor;
 import pl.estrix.common.dto.model.SettingDto;
+import pl.estrix.common.exception.ReturnParcelRESTException;
+import pl.estrix.spring.config.CustomConfig;
 
 import java.io.File;
 import java.io.IOException;
@@ -34,7 +36,6 @@ import java.util.stream.Collectors;
 
 @Service
 public class TextExtractorService {
-
 
     private static Logger LOG = LoggerFactory.getLogger(TextExtractorService.class);
 
@@ -53,19 +54,25 @@ public class TextExtractorService {
     @Autowired
     private ReadSettingCommandExecutor readSettingCommandExecutor;
 
+    @Autowired
+    private CustomConfig customConfig;
+
     public TextExtractorService() {
         this.httpClient = HttpClientBuilder.create().build();
         this.mapper = new ObjectMapper();
     }
 
     public String getExtractedText(String requestId) {
-        HttpGet httpGet = new HttpGet(EXTRACTOR_URL + requestId);
+        HttpGet httpGet = new HttpGet(customConfig.getTextextractorUrl() + requestId);
+//        HttpGet httpGet = new HttpGet(EXTRACTOR_URL + requestId);
         Map responseMap =  getEntityAndReleaseConnection(httpGet, Map.class);
         try {
             GetTextExtractorResultRequest rs = gson.fromJson(mapper.writeValueAsString(responseMap).toString(), GetTextExtractorResultRequest.class);
             return rs.getWords().stream().collect(Collectors.joining(" "));
         } catch (JsonProcessingException e) {
-            return "External OCR System error";
+//            return "External OCR System error";
+
+            throw new ReturnParcelRESTException("Błąd zewnetrzengo OCR");
         }
     }
 
@@ -87,7 +94,8 @@ public class TextExtractorService {
                 .base64Img(base64Img)
                 .build();
 
-        HttpPost postMethod = this.buildPostMethod(EXTRACTOR_URL);
+        HttpPost postMethod = this.buildPostMethod(customConfig.getTextextractorUrl());
+//        HttpPost postMethod = this.buildPostMethod(EXTRACTOR_URL);
 
 //        Gson gson = new Gson();
         String json = gson.toJson(postRequest);
@@ -103,7 +111,9 @@ public class TextExtractorService {
             TextExtractorPostResponse rs = gson.fromJson(mapper.writeValueAsString(responseMap).toString(), TextExtractorPostResponse.class);
             return rs.getRequestId();
         } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
+
+            throw new ReturnParcelRESTException("Błąd zewnetrzengo OCR. JSON Parsing error");
+//            throw new RuntimeException(e);
         }
 
 //        try (CloseableHttpResponse resp = httpClient.execute(postMethod)) {
@@ -152,25 +162,25 @@ public class TextExtractorService {
             httpRequest.releaseConnection();
         }
     }
-    private <T> T getEntity(HttpEntity httpEntity, Class<T> objectClass) {
-        try {
-
-//            HttpResponse httpResponse = httpClient.execute(httpRequest);
-//            HttpEntity httpEntity = httpResponse.getEntity();
-            if (httpEntity == null) {
-                throw new RuntimeException("Error retrieving results from http request");
-            }
-            Object result = mapper.readValue(httpEntity.getContent(), objectClass);
-            if (objectClass.isInstance(result)) {
-                return objectClass.cast(result);
-            }
-            throw new RuntimeException("Can't parse retrieved object: " + result.toString());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } finally {
-//            httpRequest.releaseConnection();
-        }
-    }
+//    private <T> T getEntity(HttpEntity httpEntity, Class<T> objectClass) {
+//        try {
+//
+////            HttpResponse httpResponse = httpClient.execute(httpRequest);
+////            HttpEntity httpEntity = httpResponse.getEntity();
+//            if (httpEntity == null) {
+//                throw new RuntimeException("Error retrieving results from http request");
+//            }
+//            Object result = mapper.readValue(httpEntity.getContent(), objectClass);
+//            if (objectClass.isInstance(result)) {
+//                return objectClass.cast(result);
+//            }
+//            throw new RuntimeException("Can't parse retrieved object: " + result.toString());
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        } finally {
+////            httpRequest.releaseConnection();
+//        }
+//    }
 
     private String changeImageToBase64(String imagePath) {
         File file = new File(String.format(PATH_IDENTIFIER,basePath,imagePath));

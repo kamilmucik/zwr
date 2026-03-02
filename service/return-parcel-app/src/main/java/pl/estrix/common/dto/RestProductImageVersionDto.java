@@ -13,4 +13,6 @@ import java.util.List;
 public class RestProductImageVersionDto {
 
     private List<ProductImageVersionDto> results;
+    private Integer totalItems;
+    private Integer totalPages;
 }

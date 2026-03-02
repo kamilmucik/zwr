@@ -4,8 +4,6 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 
 import HomeStackScreen from './HomeStack';
 
-import ScanScreen from '../screens/version/ScanScreen';
-import OCRTestScreen from '../screens/ocr/OCRTestScreen';
 import SettingsScreen from '../screens/setting/SettingsScreen';
 import GlobalStyle from "../utils/GlobalStyle";
 
@@ -37,13 +35,6 @@ const TabNavigator = ({route, navigation}) => {
           }} 
           
           />
-        <Tab.Screen 
-          name="OCR" 
-          component={OCRTestScreen} 
-          options={{
-            tabBarLabel: 'OCR',
-            tabBarIcon: ({color}) => screenOptions('ocr', color),
-          }}/>
         <Tab.Screen 
           name="Ustawienia" 
           component={SettingsScreen} 

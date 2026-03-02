@@ -38,11 +38,14 @@ public class ProductImageVersionRestController {
     @RequestMapping(value = "/findbyean", method = RequestMethod.GET)
     @ResponseBody
     public RestProductImageVersionDto findByEAN(
-            @RequestParam(value = "ean", required = true, defaultValue = "") String ean
+            @RequestParam(value = "ean", required = true, defaultValue = "") String ean,
+            @RequestParam(value = "page", required = false, defaultValue = "0") Integer pageNumber,
+            @RequestParam(value = "pageSize", required = false, defaultValue = "5") Integer pageSize
     ) {
-        return service.findByEAN(ean);
+        return service.findByEAN(ean, pageNumber, pageSize);
     }
 
+    @Async
     @RequestMapping(value ="/get-image", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<InputStreamResource> getImageDynamicType(
@@ -74,7 +77,6 @@ public class ProductImageVersionRestController {
     public RestProductImageVersionRevisionDto chnageOrder(@RequestBody ProductImageVersionRevisionDto dto) {
         return service.changeOrder(dto);
     }
-
 
     @Async
     @RequestMapping(value = "/merge-test", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)

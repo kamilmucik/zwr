@@ -14,15 +14,14 @@ export const useCustomFetch = (query: string, cached = true, stataticData = []) 
     dispach({type: ACTION_TYPE.FETCH_START, loading: true, moreLoading: true });
 
     const fetchData = () => {
-        fetch(BASE_API_URL+"/"+query, {
+        fetch(appCtx.settingsDestinationURL+"/"+query, {
             method: 'GET'
           })
           .then( (response) => {
             return response.json();
           })
           .then( (data) => {
-
-            // console.log("useCustomFetch: " + JSON.stringify(data));
+            console.log("useCustomFetch: " + JSON.stringify(data));
             dispach({type: ACTION_TYPE.FETCH_SINGLE_SUCCESS, payload: data.results[0] });
           })
           .catch( (error) => {

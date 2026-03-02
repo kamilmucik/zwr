@@ -15,7 +15,7 @@ export const useCustomPost = (query: string, formData: any, method: any, actionT
         dispach({type: ACTION_TYPE.FETCH_START, loading: true, moreLoading: true });
 
         const postData = () => {
-            fetch(BASE_API_URL+"/"+query, {
+            fetch(appCtx.settingsDestinationURL+"/"+query, {
                 method: method,
                 headers: {
                     Accept: 'application/json',

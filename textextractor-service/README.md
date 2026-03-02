@@ -11,3 +11,7 @@ mvn clean install
 ```bash
 mvn -pl :textextractor-image clean install -PdockerBuild,snapshot-registry
 ```
+
+
+playwrite:
+https://testomat.io/blog/playwright-api-testing-comprehensive-guide-with-examples/

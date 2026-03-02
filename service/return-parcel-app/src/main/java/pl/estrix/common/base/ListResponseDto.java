@@ -21,6 +21,7 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ListResponseDto<T> {
     private Integer totalCount;
+    private Integer totalPages;
     private List<T> data;
 
     public List<T> getData() {

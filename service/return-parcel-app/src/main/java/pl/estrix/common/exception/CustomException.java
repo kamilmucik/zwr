@@ -26,9 +26,6 @@ public class CustomException extends ViewExpiredException {
     }
 
     private String extractMsg(String message, StackTraceElement[] stackTraceElements){
-//        StringWriter sw = new StringWriter();
-//        PrintWriter pw = new PrintWriter(sw);
-//        super.printStackTrace(pw);
         if (stringBuilder.length()>1) stringBuilder.delete(0,stringBuilder.length()-1);
         Arrays.stream(stackTraceElements)
                 .filter( trace -> trace.getClassName().startsWith("pl"))
