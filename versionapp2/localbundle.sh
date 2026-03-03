@@ -53,9 +53,9 @@ $SCRIPT_DIR/android/gradlew bundleRelease
 
 # scp /Users/kamilmuc/ws/lkequiz/mobileapp/android/app/build/outputs/apk/release/app-release.apk
 # cd $SCRIPT_DIR
-echo 'scp '$SCRIPT_DIR'/android/app/build/outputs/apk/release/app-release.apk ubuntu@e-strix.pl:/home/ubuntu/wp/releases/megapack/2.5.4/version.apk'
+echo 'scp '$SCRIPT_DIR'/android/app/build/outputs/apk/release/app-release.apk ubuntu@e-strix.pl:/home/ubuntu/wp/releases/megapack/2.5.5/version.apk'
 
-sshpass -p 'syjAkywapy1' scp $SCRIPT_DIR/android/app/build/outputs/apk/release/app-release.apk ubuntu@e-strix.pl:/home/ubuntu/wp/releases/megapack/2.5.4/version.apk
+sshpass -p 'xxx' scp $SCRIPT_DIR/android/app/build/outputs/apk/release/app-release.apk ubuntu@e-strix.pl:/home/ubuntu/wp/releases/megapack/2.5.5/version.apk
 # sshpass -p 'xxx' scp $SCRIPT_DIR/android/app/build/outputs/apk/release/app-release.apk ubuntu@e-strix.pl:/home/ubuntu/wp/releases/megapack/2.5.1/version-rc.apk
 
 

@@ -9,18 +9,14 @@ import {useCustomEANValidator} from '../../hooks/useCustomEANValidator'
 import {useDebounce} from "../../hooks/useDebounce";
 import CustomImage from '../../components/CunstomImage';
 import { Button, InputText , InputSwitch }  from '../../components/Form.tsx';
+import Paginator from '../../components/Paginator';
 import  AsyncStorage  from '@react-native-async-storage/async-storage';
 import AppContext from "../../store/AppContext";
-import { BASE_API_URL } from '../../config.tsx';
 import {useCustomPost} from '../../hooks/useCustomPost'
 import ImageViewer from 'react-native-image-zoom-viewer';
 
-
-
-
 const ScanScreen = ({navigation, route}) => {
 
-    const eanInputRef = useRef();
     const scanner = useRef(null);
     const appCtx = useContext(AppContext);
 
@@ -46,18 +42,22 @@ const ScanScreen = ({navigation, route}) => {
     const {posUpResult} = useCustomPost('productimageversion/change-order', posUpData, 'POST', "FETCH_POSUP_SUCCESS");
 
     const [modalVisible, setModalVisible] = useState(false);
+    const [currentPage, setCurrentPage] = useState(0);
+    const [totalItems, setTotalItems] = useState(0);
+    const [totalPages, setTotalPages] = useState(0);
+    
 
     const fetchProduct = async (ean) => {
-      setQuery('productimageversion/findbyean?ean='+ean);
+      setQuery('productimageversion/findbyean?ean='+ean+'&page='+currentPage+'&pageSize='+appCtx.settingsPageSize);
     }
 
   async function loadProperties() {
       const _value = await AsyncStorage.getItem('@storage_versions2');
       let parsed = JSON.parse(_value);
       appCtx.setSettingsAuthor(parsed.author);
+      appCtx.setSettingsPageSize(parsed.pageSize);
       appCtx.setSettingsDestinationURL(parsed.destinationURL);
   }
-
 
   useEffect(() => {
       loadProperties();
@@ -81,14 +81,21 @@ const ScanScreen = ({navigation, route}) => {
 
 
   useEffect(() => {
-    setQuery('productimageversion/findbyean?ean='+singleResult?.ean+'&ts='+Date.now());
-  }, [route.params?.itemId]);
-
-  
+    // console.log("refresh: " + route.params?.itemId); 
+    setImages([]);
+    // setCurrentPage(0);
+    setTotalItems(0);
+    setTotalPages(0);
+    setQuery('productimageversion/findbyean?ean='+singleResult?.ean+'&page='+currentPage+'&pageSize='+appCtx.settingsPageSize+'&ts='+Date.now());
+  }, [route.params?.itemId, currentPage]);
 
   const handleRefresh = () => {
     // console.log("refresh: " + singleResult?.ean);
-    setQuery('productimageversion/findbyean?ean='+singleResult?.ean+'&ts='+Date.now());
+    setImages([]);
+    setCurrentPage(0);
+    setTotalItems(0);
+    setTotalPages(0);
+    setQuery('productimageversion/findbyean?ean='+singleResult?.ean+'&page='+currentPage+'&pageSize='+appCtx.settingsPageSize+'&ts='+Date.now());
   }
 
   const handleSetEAN =  () => {
@@ -96,6 +103,8 @@ const ScanScreen = ({navigation, route}) => {
     setEanValue('');
     setEanScannerValue('');
     setImages([]);
+    setTotalItems(0);
+    setTotalPages(0);
   };
 
   useEffect(() => {
@@ -105,17 +114,16 @@ const ScanScreen = ({navigation, route}) => {
       setIsLoaded(true);
     }
     if (singleResult === undefined){
-      // showMessage({
-      //   message: "Brak w bazie!",
-      //   type: "warning",
-      //   });
     } else {
       setEanValue('');
       setEanScannerValue('');
       setEan2SendValue('');
     }
     
+    setTotalItems(singleResult?.totalItems);
+    setTotalPages(singleResult?.totalPages);
     setImages(singleResult?.revisions);
+    setShouldRefresh(Date.now());
     // console.log(singleResult?.revisions.imgPath)
   }, [singleResult]);
 
@@ -150,11 +158,14 @@ const ScanScreen = ({navigation, route}) => {
       });
     }
 
+    const onPressPaginatorHandler = (currentPage) => {
+      setCurrentPage(currentPage);
+    };
+
     return !scan ? (
       <ScrollView  refreshControl={
         <RefreshControl refreshing={loading} onRefresh={handleRefresh} />
       }>
-
 <View>
 
 <Modal
@@ -164,10 +175,6 @@ const ScanScreen = ({navigation, route}) => {
     <ImageViewer imageUrls={selectedImage} />
 </Modal>
 </View>
-
-
-
-
         <View  style={styles.mainContainer}>
             <View style={styles.rowContainer} >
               <View style={[styles.inputSection]}>
@@ -208,51 +215,61 @@ const ScanScreen = ({navigation, route}) => {
             <ActivityIndicator size='large'/>
           </View>}
           
-          <DataTable  >
-            <DataTable.Row >
-              <DataTable.Cell >Numer artykułu</DataTable.Cell>
-              <DataTable.Cell >{singleResult?.artNumber}</DataTable.Cell>
-            </DataTable.Row>
-            <DataTable.Row >
-              <DataTable.Cell >EAN</DataTable.Cell>
-              <DataTable.Cell >
-                <View style={{ minHeight: 20, maxWidth:180,
-                      alignItems: 'center',
-                      color: 'black',
-                      justifyContent: 'flex-start',
-                      flexDirection: "column",
-                      flexWrap: "wrap-reverse",
-                    }}>
-                      <Text style={{
-                        color: 'black',
-                      }}>
-                        {singleResult?.ean}
-                      </Text>
-                    </View>
-                </DataTable.Cell>
-            </DataTable.Row>
-            <DataTable.Row >
-              <DataTable.Cell>Nazwa</DataTable.Cell>
-              <DataTable.Cell>
-                <View style={{ minHeight: 20, maxWidth:180,
-                      alignItems: 'center',
-                      color: 'black',
-                      justifyContent: 'flex-start',
-                      flexDirection: "column",
-                      flexWrap: "wrap-reverse",
-                    }}>
-                      <Text style={{
-                        color: 'black',
-                      }}>
-                        {singleResult?.title}
-                      </Text>
-                    </View>
-              </DataTable.Cell>
-            </DataTable.Row>
-          </DataTable>
-
+    <DataTable  >
+      <DataTable.Row >
+        <DataTable.Cell >Numer artykułu</DataTable.Cell>
+        <DataTable.Cell >{singleResult?.artNumber}</DataTable.Cell>
+      </DataTable.Row>
+      <DataTable.Row >
+        <DataTable.Cell >EAN</DataTable.Cell>
+        <DataTable.Cell >
+          <View style={{ minHeight: 20, maxWidth:180,
+                alignItems: 'center',
+                color: 'black',
+                justifyContent: 'flex-start',
+                flexDirection: "column",
+                flexWrap: "wrap-reverse",
+              }}>
+                <Text style={{
+                  color: 'black',
+                }}>
+                  {singleResult?.ean}
+                </Text>
+              </View>
+          </DataTable.Cell>
+      </DataTable.Row>
+      <DataTable.Row >
+        <DataTable.Cell>Nazwa</DataTable.Cell>
+        <DataTable.Cell>
+          <View style={{ minHeight: 20, maxWidth:180,
+                alignItems: 'center',
+                color: 'black',
+                justifyContent: 'flex-start',
+                flexDirection: "column",
+                flexWrap: "wrap-reverse",
+              }}>
+                <Text style={{
+                  color: 'black',
+                }}>
+                  {singleResult?.title}
+                </Text>
+              </View>
+        </DataTable.Cell>
+      </DataTable.Row>
+    </DataTable>
           {isLoaded ? (
             <View >
+              {images.length ? (
+                <Paginator
+                  currentPage={currentPage}
+                  totalItems={totalItems}
+                  totalPages={totalPages}
+                  pageSize={appCtx.settingsPageSize}
+                  incPageAndLoad={onPressPaginatorHandler}
+                  decPageAndLoad={onPressPaginatorHandler}
+                />
+              ): (<View />)}
+              
               {images.map(d => (
                 <CustomImage 
                   label={d.hashGroup} 
