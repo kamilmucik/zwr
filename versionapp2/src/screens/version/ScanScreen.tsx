@@ -17,7 +17,6 @@ import ImageViewer from 'react-native-image-zoom-viewer';
 
 const ScanScreen = ({navigation, route}) => {
 
-    const eanInputRef = useRef();
     const scanner = useRef(null);
     const appCtx = useContext(AppContext);
 
@@ -60,7 +59,6 @@ const ScanScreen = ({navigation, route}) => {
       appCtx.setSettingsDestinationURL(parsed.destinationURL);
   }
 
-
   useEffect(() => {
       loadProperties();
     }, []);
@@ -83,11 +81,20 @@ const ScanScreen = ({navigation, route}) => {
 
 
   useEffect(() => {
+    // console.log("refresh: " + route.params?.itemId); 
+    setImages([]);
+    // setCurrentPage(0);
+    setTotalItems(0);
+    setTotalPages(0);
     setQuery('productimageversion/findbyean?ean='+singleResult?.ean+'&page='+currentPage+'&pageSize='+appCtx.settingsPageSize+'&ts='+Date.now());
   }, [route.params?.itemId, currentPage]);
 
   const handleRefresh = () => {
     // console.log("refresh: " + singleResult?.ean);
+    setImages([]);
+    setCurrentPage(0);
+    setTotalItems(0);
+    setTotalPages(0);
     setQuery('productimageversion/findbyean?ean='+singleResult?.ean+'&page='+currentPage+'&pageSize='+appCtx.settingsPageSize+'&ts='+Date.now());
   }
 
@@ -116,6 +123,7 @@ const ScanScreen = ({navigation, route}) => {
     setTotalItems(singleResult?.totalItems);
     setTotalPages(singleResult?.totalPages);
     setImages(singleResult?.revisions);
+    setShouldRefresh(Date.now());
     // console.log(singleResult?.revisions.imgPath)
   }, [singleResult]);
 
@@ -249,19 +257,19 @@ const ScanScreen = ({navigation, route}) => {
         </DataTable.Cell>
       </DataTable.Row>
     </DataTable>
-
           {isLoaded ? (
             <View >
-
-              <Paginator
-              currentPage={currentPage}
-              totalItems={totalItems}
-              totalPages={totalPages}
-              pageSize={appCtx.settingsPageSize}
-              incPageAndLoad={onPressPaginatorHandler}
-              decPageAndLoad={onPressPaginatorHandler}
-               />
-
+              {images.length ? (
+                <Paginator
+                  currentPage={currentPage}
+                  totalItems={totalItems}
+                  totalPages={totalPages}
+                  pageSize={appCtx.settingsPageSize}
+                  incPageAndLoad={onPressPaginatorHandler}
+                  decPageAndLoad={onPressPaginatorHandler}
+                />
+              ): (<View />)}
+              
               {images.map(d => (
                 <CustomImage 
                   label={d.hashGroup} 

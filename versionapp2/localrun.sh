@@ -7,12 +7,12 @@ SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
 echo $SCRIPT_DIR
 
-mvn -v
-gradle -v
-node -v
-npm -v
+# mvn -v
+# gradle -v
+# node -v
+# npm -v
 
-mvn clean
+# mvn clean
 
 #cd $SCRIPT_DIR/android/
 #$SCRIPT_DIR/android/gradlew clean
@@ -22,7 +22,7 @@ cd $SCRIPT_DIR
 watchman watch-del-all
 
 #rm -rfv .bundle
-rm -rfv node_modules
+rm -rf node_modules
 #rm -rf node_modules
 #rm -rfv $SCRIPT_DIR/android/build
 #rm -rfv $SCRIPT_DIR/android/app/build

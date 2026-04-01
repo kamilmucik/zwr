@@ -21,11 +21,11 @@ export const useCustomFetch = (query: string, cached = true, stataticData = []) 
             return response.json();
           })
           .then( (data) => {
-            console.log("useCustomFetch: " + JSON.stringify(data));
+            // console.log("useCustomFetch: " + JSON.stringify(data));
             dispach({type: ACTION_TYPE.FETCH_SINGLE_SUCCESS, payload: data.results[0] });
           })
           .catch( (error) => {
-            console.error(error);
+            // console.error(error);
             dispach({type: ACTION_TYPE.FETCH_ERROR, error: error});
           });
     }
