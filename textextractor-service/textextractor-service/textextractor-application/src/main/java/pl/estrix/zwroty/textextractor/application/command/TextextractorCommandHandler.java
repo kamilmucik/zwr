@@ -12,7 +12,6 @@ import pl.estrix.zwroty.textextractor.domain.port.TextExtractorRepository;
 @Component
 public class TextextractorCommandHandler {
 
-
     private final TextExtractorDomainService textExtractorDomainService;
     private final TextExtractorRepository textExtractorRepository;
 
@@ -26,7 +25,7 @@ public class TextextractorCommandHandler {
 
     @Transactional
     public ResponseId extractText(ExtractTextCommand textextractorCommand) {
-        log.info("extractText: {}", textextractorCommand.requestId());
+        log.info("requestId: {}", textextractorCommand.requestId());
 
         var words = textExtractorDomainService.shouldExtractTextFromImageTest(textextractorCommand.base64Image());
         textExtractorRepository.save(textextractorCommand.requestId(), words);

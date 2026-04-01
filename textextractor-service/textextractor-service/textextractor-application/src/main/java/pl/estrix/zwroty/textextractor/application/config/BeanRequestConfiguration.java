@@ -7,8 +7,14 @@ import pl.estrix.zwroty.textextractor.domain.TextExtractorDomainService;
 @Configuration
 public class BeanRequestConfiguration {
 
+    private final TextextractorServiceConfigProperties properties;
+
+    public BeanRequestConfiguration(TextextractorServiceConfigProperties properties) {
+        this.properties = properties;
+    }
+
     @Bean
     public TextExtractorDomainService textExtractorDomainService() {
-        return new TextExtractorDomainService();
+        return new TextExtractorDomainService(properties.getAwsAccessKeyId(), properties.getAwsSecretAccessKey());
     }
 }

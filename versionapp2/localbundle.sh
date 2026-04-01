@@ -59,6 +59,7 @@ sshpass -p 'xxx' scp $SCRIPT_DIR/android/app/build/outputs/apk/release/app-relea
 # sshpass -p 'xxx' scp $SCRIPT_DIR/android/app/build/outputs/apk/release/app-release.apk ubuntu@e-strix.pl:/home/ubuntu/wp/releases/megapack/2.5.1/version-rc.apk
 
 
+
 echo "Wrzutka zakończona"
 
 

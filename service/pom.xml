@@ -4,7 +4,7 @@
 
     <groupId>pl.estrix</groupId>
     <artifactId>return-parcel</artifactId>
-    <version>2.5.4</version>
+    <version>2.5.5</version>
     <packaging>pom</packaging>
 
     <developers>
@@ -131,19 +131,11 @@
     <dependencyManagement>
         <dependencies>
             <!-- https://mvnrepository.com/artifact/com.lowagie/itext -->
-<!--            <dependency>-->
-<!--                <groupId>com.lowagie</groupId>-->
-<!--                <artifactId>itext</artifactId>-->
-<!--                <version>2.1.7.js8</version>-->
-<!--            </dependency>-->
-            <!-- https://mvnrepository.com/artifact/com.lowagie/itext -->
             <dependency>
                 <groupId>com.lowagie</groupId>
                 <artifactId>itext</artifactId>
                 <version>2.1.7</version>
             </dependency>
-
-
         </dependencies>
     </dependencyManagement>
 
