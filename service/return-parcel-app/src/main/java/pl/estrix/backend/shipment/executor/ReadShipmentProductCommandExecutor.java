@@ -28,15 +28,6 @@ public class ReadShipmentProductCommandExecutor extends BaseShipmentProductComma
                 .map(this::mapEntityToDto)
                 .collect(Collectors.toList());
 
-        if (fillShops) {
-            queryResultList.stream().forEach(o -> {
-                o.setShopCounter(shopRepositoryCustom.findCount(ShipmentProductShopSearchCriteriaDto
-                        .builder()
-                        .productId(o.getId())
-                        .build()));
-            });
-        }
-
         return createListResponseDto(pagingCriteria, () -> queryResultList, () -> (int) customRepository.findCount(searchCriteria));
     }
 

@@ -115,7 +115,7 @@ public class ShipmentService {
         return temp;
     }
 
-    @Transactional
+//    @Transactional
     public GetShipmentDetailsDto getItem(Long id){
         return GetShipmentDetailsDto
                 .builder()

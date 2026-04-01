@@ -2,7 +2,7 @@ version: '3.3'
 
 services:
   rp-db:
-    image: mysql:8.0.32
+    image: container-registry.oracle.com/mysql/community-server:8.4
     container_name: rp-db
     restart: always
     #env_file: .env
@@ -15,8 +15,6 @@ services:
       - 3307:3306
     volumes:
       - ./mysql-dump/:/docker-entrypoint-initdb.d
-      - rp-dbdata8_0_25:/var/lib/mysql
-    command: [mysqld, --default-authentication-plugin=mysql_native_password, --character-set-server=utf8mb4, --collation-server=utf8mb4_unicode_ci, --innodb_monitor_enable=all, --max-connections=1001]
     healthcheck:
       test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
       timeout: 10s
@@ -44,13 +42,18 @@ services:
         aliases:
           - rp.e-strix.pl
   parcel-server:
-    image: "registry.hub.docker.com/kamilmucik/return-parcel-server:2.5.1"
+    image: "registry.hub.docker.com/kamilmucik/return-parcel-server:2.6.0"
     container_name: parcel-server
     #   platform: linux/x86_64
     platform: linux/amd64
     volumes:
+      - ./config/server/artifacts/tomcat/bin/setenv.sh:/usr/local/tomcat/bin/setenv.sh
+      - ./config/server/artifacts/tomcat/conf/custom.properties:/usr/local/tomcat/conf/custom.properties
       - ./logs/server/:/opt/tomcat/logs/
+    environment:
+      DEBUG_APP: 'true'
     ports:
+      - 8000:8000
       - 8881:8080
       - 9100:9100
     networks:

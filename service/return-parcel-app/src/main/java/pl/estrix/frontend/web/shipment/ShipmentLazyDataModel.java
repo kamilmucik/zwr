@@ -10,6 +10,7 @@ import pl.estrix.backend.shipment.service.ShipmentService;
 import pl.estrix.common.base.ListResponseDto;
 import pl.estrix.common.dto.ShipmentSearchCriteriaDto;
 import pl.estrix.common.dto.model.ShipmentDto;
+import pl.estrix.common.dto.model.UserDto;
 
 import javax.faces.context.FacesContext;
 import java.io.IOException;
@@ -24,13 +25,15 @@ public class ShipmentLazyDataModel extends LazyDataModel<ShipmentDto> {
     private List<ShipmentDto> datasource;
 
     private String tableSearch;
+    private UserDto userDto;
 
     @Autowired
     private ShipmentService storeService;
 
-    public ShipmentLazyDataModel(ShipmentService storeService,String tableSearch) {
+    public ShipmentLazyDataModel(ShipmentService storeService, UserDto userDto, String tableSearch) {
         this.storeService = storeService;
         this.tableSearch = tableSearch;
+        this.userDto = userDto;
     }
 
     @Override
@@ -62,6 +65,7 @@ public class ShipmentLazyDataModel extends LazyDataModel<ShipmentDto> {
         ShipmentSearchCriteriaDto searchCriteria = new ShipmentSearchCriteriaDto();
 
         searchCriteria.setTableSearch(tableSearch);
+        searchCriteria.setUserDto(userDto);
 
         if (sortField != null) {
             searchCriteria.setSortField(sortField);

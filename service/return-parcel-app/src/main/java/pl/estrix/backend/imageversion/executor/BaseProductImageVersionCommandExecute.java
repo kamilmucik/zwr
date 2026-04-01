@@ -25,6 +25,7 @@ public class BaseProductImageVersionCommandExecute extends BaseCommandExecutor<P
         entity.setArtNumber(dto.getArtNumber());
         entity.setEan(dto.getEan());
         entity.setTitle(dto.getTitle());
+        entity.setWarehousePlace(dto.getWarehousePlace());
         return entity;
     }
 
@@ -32,6 +33,7 @@ public class BaseProductImageVersionCommandExecute extends BaseCommandExecutor<P
         if (entity == null)
             return null;
         ProductImageVersionDto dto = new ProductImageVersionDto();
+        dto.setWarehousePlace(entity.getWarehousePlace());
         dto.setId(entity.getId());
         dto.setArtNumber(entity.getArtNumber());
         dto.setEan(entity.getEan());

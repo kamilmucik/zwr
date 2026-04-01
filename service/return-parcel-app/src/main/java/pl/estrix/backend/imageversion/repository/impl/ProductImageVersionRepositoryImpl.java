@@ -43,6 +43,7 @@ public class ProductImageVersionRepositoryImpl extends QueryDslRepositorySupport
         return query.list(Projections.bean(
                 ProductImageVersion.class,
                 productImageVersion.id,
+                productImageVersion.warehousePlace,
                 productImageVersion.ean,
                 productImageVersion.title,
                 productImageVersion.artNumber
@@ -52,7 +53,6 @@ public class ProductImageVersionRepositoryImpl extends QueryDslRepositorySupport
     @Override
     public long findCount(ProductImageVersionSearchCriteriaDto searchCriteria) {
         JPQLQuery query = getQueryForFind(searchCriteria);
-//        addPagingCriteriaToQuery(query, null);
         return query.count();
     }
 
@@ -60,10 +60,16 @@ public class ProductImageVersionRepositoryImpl extends QueryDslRepositorySupport
         BooleanBuilder builder = new BooleanBuilder();
         JPQLQuery query = from(productImageVersion);
 
+        if (searchParams.getUserDto() != null) {
+            builder.and(productImageVersion.warehousePlace.in(searchParams.getUserDto().getWarehouseIds().split(",")));
+        }
+
         if (StringUtils.isNotEmpty(searchParams.getTableSearch())){
-            builder.and(productImageVersion.ean.like("%"+searchParams.getTableSearch()+"%"))
-                    .or(productImageVersion.artNumber.like("%"+searchParams.getTableSearch()+"%"))
-                    .or(productImageVersion.title.like("%"+searchParams.getTableSearch()+"%"));
+            builder.andAnyOf(
+                    productImageVersion.ean.like("%"+searchParams.getTableSearch()+"%"),
+                    productImageVersion.artNumber.like("%"+searchParams.getTableSearch()+"%"),
+                    productImageVersion.title.like("%"+searchParams.getTableSearch()+"%")
+            );
         }
         query.where(builder);
         return query;

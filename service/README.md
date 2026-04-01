@@ -57,4 +57,4 @@ scp return-parcel-docker/return-parcel-docker-server/target/dependencies/return-
 scp return-parcel-docker/return-parcel-docker-server/target/dependencies/return-parcel-app-2.5.0.war ubuntu@e-strix.pl:/home/ubuntu/wp/releases/megapack/2.5.0/ROOT-RC.war
 scp return-parcel-docker/return-parcel-docker-server/target/dependencies/return-parcel-app-2.3.0.war ubuntu@162.19.227.81:/home/ubuntu/return-parcel/conf/tomcat-mock/target/ROOT.war
 
-scp ./setup/setup-server/target/serwer-2.5.5.zip ubuntu@e-strix.pl:/home/ubuntu/wp/releases/megapack/2.5.5/serwer-2.5.5.zip
+scp ./setup/setup-server/target/serwer-2.6.0.zip ubuntu@e-strix.pl:/home/ubuntu/wp/releases/megapack/2.6.0/serwer-2.6.0.zip

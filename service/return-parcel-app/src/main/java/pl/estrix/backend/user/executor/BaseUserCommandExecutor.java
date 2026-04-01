@@ -28,11 +28,13 @@ public class BaseUserCommandExecutor extends BaseCommandExecutor<User, UserDto> 
         entity.setId(dto.getId());
         entity.setEmail(dto.getEmail());
         entity.setPassword(dto.getPassword());
+        entity.setOwnPin(dto.getPin());
         entity.setEnabled(dto.isEnabled());
         entity.setLocked(dto.isLocked());
         entity.setFirstName(dto.getUserName());
         entity.setLastName(dto.getUserLastname());
         entity.setRole(dto.getRole() );
+        entity.setOwnWarehouse(dto.getWarehouseIds());
         return entity;
     }
 
@@ -41,11 +43,13 @@ public class BaseUserCommandExecutor extends BaseCommandExecutor<User, UserDto> 
         dto.setId(entity.getId());
         dto.setEmail(entity.getEmail());
         dto.setPassword(entity.getPassword());
+        dto.setPin(entity.getOwnPin());
         dto.setEnabled(entity.isEnabled());
         dto.setLocked(entity.isLocked());
         dto.setUserName(entity.getFirstName());
         dto.setUserLastname(entity.getLastName());
         dto.setRole(entity.getRole());
+        dto.setWarehouseIds(entity.getOwnWarehouse());
         return dto;
     }
 }

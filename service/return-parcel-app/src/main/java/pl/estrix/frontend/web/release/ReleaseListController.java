@@ -52,23 +52,11 @@ public class ReleaseListController extends MainController implements Serializabl
 
         searchText = (String) getContext().getExternalContext().getSessionMap().get("_release_list_search");
 
-        lazyModel = new ReleaseArticleLazyDataModel(releaseService, searchText);
+        lazyModel = new ReleaseArticleLazyDataModel(releaseService, getCurrentUser(), searchText);
     }
 
-//    public void delete() {
-//        releaseService.delete(selectedItem);
-//    }
-//
-//    public void edit(Long id) {
-//        if (id == null || id == 0) {
-//
-//        } else {
-//            selectedItem = releaseService.getItem(id).getShipmentDto();
-//        }
-//    }
-
     public void search() {
-        lazyModel = new ReleaseArticleLazyDataModel(releaseService, searchText);
+        lazyModel = new ReleaseArticleLazyDataModel(releaseService, getCurrentUser(), searchText);
     }
 
     public String onRowSelectNavigate(SelectEvent event) {

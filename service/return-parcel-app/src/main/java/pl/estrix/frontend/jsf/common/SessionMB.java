@@ -15,6 +15,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.StandardPasswordEncoder;
 import org.springframework.stereotype.Component;
+import pl.estrix.frontend.web.MainController;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;

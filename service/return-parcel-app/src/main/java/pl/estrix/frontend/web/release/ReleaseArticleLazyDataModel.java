@@ -10,6 +10,7 @@ import pl.estrix.backend.release.service.ReleaseArticleService;
 import pl.estrix.common.base.ListResponseDto;
 import pl.estrix.common.dto.ReleaseArticleSearchCriteriaDto;
 import pl.estrix.common.dto.model.ReleaseArticleDto;
+import pl.estrix.common.dto.model.UserDto;
 
 import javax.faces.context.FacesContext;
 import java.io.IOException;
@@ -25,12 +26,14 @@ public class ReleaseArticleLazyDataModel extends LazyDataModel<ReleaseArticleDto
     private List<ReleaseArticleDto> datasource;
 
     private String tableSearch;
+    private UserDto userDto;
 
     @Autowired
     private ReleaseArticleService releaseArticleService;
 
-    public ReleaseArticleLazyDataModel(ReleaseArticleService releaseArticleService, String tableSearch) {
+    public ReleaseArticleLazyDataModel(ReleaseArticleService releaseArticleService, UserDto userDto, String tableSearch) {
         this.releaseArticleService = releaseArticleService;
+        this.userDto = userDto;
         this.tableSearch = tableSearch;
     }
 
@@ -63,6 +66,7 @@ public class ReleaseArticleLazyDataModel extends LazyDataModel<ReleaseArticleDto
         ReleaseArticleSearchCriteriaDto searchCriteria = new ReleaseArticleSearchCriteriaDto();
 
         searchCriteria.setTableSearch(tableSearch);
+        searchCriteria.setUserDto(userDto);
 
         if (sortField != null) {
             searchCriteria.setSortField(sortField);

@@ -12,6 +12,8 @@ public class ShipmentDto extends BaseEntityDto<Long> {
 
     private String number;
 
+    private String warehousePlace;
+
     private Integer productCounter;
 
     private Boolean active;

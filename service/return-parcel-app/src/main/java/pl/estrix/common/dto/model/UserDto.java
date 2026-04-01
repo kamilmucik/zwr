@@ -17,8 +17,10 @@ public class UserDto extends BaseEntityDto<Long> {
     private String email;
 
     private String password;
+    private String pin;
 
     private String role;
+    private String warehouseIds;
 
     private boolean enabled;
 

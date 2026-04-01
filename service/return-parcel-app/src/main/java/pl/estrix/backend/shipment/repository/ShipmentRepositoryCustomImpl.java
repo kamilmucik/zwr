@@ -31,6 +31,7 @@ public class ShipmentRepositoryCustomImpl extends QueryDslRepositorySupportBase 
         return query.list(Projections.bean(
                 Shipment.class,
                 shipment.id,
+                shipment.warehousePlace,
                 shipment.number,
                 shipment.active,
                 shipment.group
@@ -47,14 +48,16 @@ public class ShipmentRepositoryCustomImpl extends QueryDslRepositorySupportBase 
         BooleanBuilder builder = new BooleanBuilder();
         JPQLQuery query = from(shipment);
 
+        if (searchParams.getUserDto() != null) {
+            builder.and(shipment.warehousePlace.in(searchParams.getUserDto().getWarehouseIds().split(",")));
+        }
+
         if (searchParams.getActive() != null) {
-            query.where(shipment.active.eq(searchParams.getActive()));
+            builder.and(shipment.active.eq(searchParams.getActive()));
         }
 
         if (StringUtils.isNotEmpty(searchParams.getTableSearch())){
-            query.where(
-                    shipment.number.like("%"+searchParams.getTableSearch()+"%")
-            );
+            builder.and(shipment.number.like("%"+searchParams.getTableSearch()+"%"));
         }
 
         query.where(builder);

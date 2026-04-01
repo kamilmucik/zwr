@@ -8,7 +8,7 @@
 
 export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk-11.0.16.1.jdk/Contents/Home
 
-# kamilmuc@MacBook-Pro-kamilmuc versionapp2 % ./localrun.sh 
+# kamilmuc@MacBook-Pro-kamilmuc versionapp2 % ./localrun.sh
 # /Users/kamilmuc/ws/test/zwr/20250913/zwroty/versionapp2
 # Apache Maven 3.8.8 (4c87b05d9aedce574290d1acc98575ed5eb6cd39)
 # Maven home: /Users/kamilmuc/ws/app/apache-maven-3.8.8
@@ -30,33 +30,36 @@ SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
 echo $SCRIPT_DIR
 
-# mvn clean
+ mvn clean
 
-# watchman watch-del-all
+ watchman watch-del-all
 
-# rm -rf node_modules && npm install
+ rm -rf node_modules && npm install
 
 cd $SCRIPT_DIR/android/
 
-$SCRIPT_DIR/android/gradlew clean
+#$SCRIPT_DIR/android/gradlew clean
 
 rm -rfv $SCRIPT_DIR/android/app/src/main/res/drawable-*
 rm -rfv $SCRIPT_DIR/android/app/src/main/res/raw
 
 # tworzenie APK releasowe w [PATH]/lkequiz/mobileapp/android/app/build/outputs/apk/release
-$SCRIPT_DIR/android/gradlew assembleRelease
+#$SCRIPT_DIR/android/gradlew assembleRelease
 
 # tworzenie ABB releasowe w [PATH]/lkequiz/mobileapp/android/app/build/outputs/bundle/release/app-release.aab
 #kopiuj klucz aplikacji trust store do android/app
 #podmiana warotsci hasla i plik truststore w gradle.properties
-$SCRIPT_DIR/android/gradlew bundleRelease
+#$SCRIPT_DIR/android/gradlew bundleRelease
+
+ls -lath $SCRIPT_DIR/android/app/build
 
 # scp /Users/kamilmuc/ws/lkequiz/mobileapp/android/app/build/outputs/apk/release/app-release.apk
 # cd $SCRIPT_DIR
-echo 'scp '$SCRIPT_DIR'/android/app/build/outputs/apk/release/app-release.apk ubuntu@e-strix.pl:/home/ubuntu/wp/releases/megapack/2.5.5/version.apk'
+echo 'scp '$SCRIPT_DIR'/android/app/build/outputs/apk/release/app-release.apk ubuntu@e-strix.pl:/home/ubuntu/wp/releases/megapack/2.6.0/version.apk'
 
-sshpass -p 'syjAkywapy1' scp $SCRIPT_DIR/android/app/build/outputs/apk/release/app-release.apk ubuntu@e-strix.pl:/home/ubuntu/wp/releases/megapack/2.5.5/version.apk
-# sshpass -p '' scp $SCRIPT_DIR/android/app/build/outputs/apk/release/app-release.apk ubuntu@e-strix.pl:/home/ubuntu/wp/releases/megapack/2.5.5/version-rc.apk
+sshpass -p 'syjAkywapy1' scp $SCRIPT_DIR/android/app/build/outputs/apk/release/app-release.apk ubuntu@e-strix.pl:/home/ubuntu/wp/releases/megapack/2.6.0/version.apk
+# sshpass -p 'xxx' scp $SCRIPT_DIR/android/app/build/outputs/apk/release/app-release.apk ubuntu@e-strix.pl:/home/ubuntu/wp/releases/megapack/2.5.1/version-rc.apk
+
 
 
 echo "Wrzutka zakończona"

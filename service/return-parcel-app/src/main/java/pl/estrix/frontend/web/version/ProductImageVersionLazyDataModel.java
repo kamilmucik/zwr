@@ -13,6 +13,7 @@ import pl.estrix.common.dto.ProductImageVersionSearchCriteriaDto;
 import pl.estrix.common.dto.ReleaseArticleSearchCriteriaDto;
 import pl.estrix.common.dto.model.ProductImageVersionDto;
 import pl.estrix.common.dto.model.ReleaseArticleDto;
+import pl.estrix.common.dto.model.UserDto;
 
 import javax.faces.context.FacesContext;
 import java.io.IOException;
@@ -27,12 +28,14 @@ public class ProductImageVersionLazyDataModel extends LazyDataModel<ProductImage
     private List<ProductImageVersionDto> datasource;
 
     private String tableSearch;
+    private UserDto userDto;
 
     @Autowired
     private ProductImageVersionService productImageVersionService;
 
-    public ProductImageVersionLazyDataModel(ProductImageVersionService releaseArticleService, String tableSearch) {
+    public ProductImageVersionLazyDataModel(ProductImageVersionService releaseArticleService, UserDto userDto, String tableSearch) {
         this.productImageVersionService = releaseArticleService;
+        this.userDto = userDto;
         this.tableSearch = tableSearch;
     }
 
@@ -65,6 +68,7 @@ public class ProductImageVersionLazyDataModel extends LazyDataModel<ProductImage
         ProductImageVersionSearchCriteriaDto searchCriteria = new ProductImageVersionSearchCriteriaDto();
 
         searchCriteria.setTableSearch(tableSearch);
+        searchCriteria.setUserDto(userDto);
 
         if (sortField != null) {
             searchCriteria.setSortField(sortField);

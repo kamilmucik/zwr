@@ -58,6 +58,9 @@
                 <p:column headerText="Nazwisko">
                     <h:outputText value="#{user.userLastname}" />
                 </p:column>
+                <p:column headerText="Magazyn">
+                    <h:outputText value="#{user.warehouseIds}" />
+                </p:column>
                 <p:column headerText="Aktywny" style="width:100px; text-align: center;">
                     <h:graphicImage library="sh" name="img/#{user.enabled}.png"
                                     style="width:24px; height:auto;" />

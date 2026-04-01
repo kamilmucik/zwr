@@ -30,6 +30,7 @@ public class BaseShipmentCommandExecutor extends BaseCommandExecutor<Shipment, S
         entity.setNumber(dto.getNumber());
         entity.setActive(dto.getActive());
         entity.setGroup(dto.getGroup());
+        entity.setWarehousePlace(dto.getWarehousePlace());
         return entity;
     }
 
@@ -39,6 +40,7 @@ public class BaseShipmentCommandExecutor extends BaseCommandExecutor<Shipment, S
         dto.setNumber(entity.getNumber());
         dto.setActive(entity.getActive());
         dto.setGroup(entity.getGroup());
+        dto.setWarehousePlace(entity.getWarehousePlace());
         return dto;
     }
 

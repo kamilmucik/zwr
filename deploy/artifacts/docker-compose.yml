@@ -37,7 +37,7 @@ services:
     networks:
       rp-network:
   return-parcel-server:
-    image: "registry.hub.docker.com/kamilmucik/return-parcel-server:2.5.5"
+    image: "registry.hub.docker.com/kamilmucik/return-parcel-server:2.6.0"
     container_name: return-parcel-server
     volumes:
       - ./config/server/artifacts/tomcat/conf/custom.properties:/usr/local/tomcat/conf/custom.properties

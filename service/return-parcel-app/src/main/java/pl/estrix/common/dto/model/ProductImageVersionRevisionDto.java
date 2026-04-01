@@ -28,6 +28,7 @@ public class ProductImageVersionRevisionDto extends BaseEntityDto<Long> {
     private Long orderTimestamp;
     private String comment;
     private String author;
+    private String warehouse;
     @Setter
     private boolean changesDetected;
 
@@ -35,7 +36,7 @@ public class ProductImageVersionRevisionDto extends BaseEntityDto<Long> {
     public ProductImageVersionRevisionDto(Long id, String artNumber, String ean, Long versionId, Long parentId, String description,
                                           String imgPath, boolean main, String imgBas64, String hashGroup, LocalDateTime lastUpdate,
                                           boolean changesDetected,boolean externalOCRCheck, Long orderTimestamp, String comment,
-                                          String author) {
+                                          String author, String warehouse) {
         super(id);
         this.artNumber = artNumber;
         this.ean = ean;
@@ -52,5 +53,6 @@ public class ProductImageVersionRevisionDto extends BaseEntityDto<Long> {
         this.comment = comment;
         this.externalOCRCheck = externalOCRCheck;
         this.author = author;
+        this.warehouse = warehouse;
     }
 }

@@ -3,8 +3,6 @@
 <ui:composition template="/layout/basicLayout.xhtml" xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core"
-                xmlns:b="http://bootsfaces.net/ui"
-                xmlns:pp="http://xmlns.jcp.org/jsf/passthrough"
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:ui="http://java.sun.com/jsf/facelets">
 
@@ -27,6 +25,9 @@
                     <h:inputHidden value="#{shipmentEditController.id}" id="id" />
                     <h:inputHidden value="#{shipmentEditController.tablePageInx}" id="table_page" />
                     <p:panel  header="Import pliku" style="margin-bottom:20px">
+                        <p:selectOneMenu id="warehouse" value="#{shipmentEditController.selectedWarehouse}" style="width: 250px">
+                            <f:selectItems value="#{shipmentEditController.optionalWarehouse}" />
+                        </p:selectOneMenu>
                         <p:fileUpload fileUploadListener="#{shipmentEditController.handleFileUpload}"
                                       mode="advanced"
                                       update="display"

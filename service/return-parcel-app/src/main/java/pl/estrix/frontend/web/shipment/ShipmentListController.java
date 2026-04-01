@@ -14,6 +14,7 @@ import pl.estrix.backend.reports.service.ExcelReportService;
 import pl.estrix.backend.shipment.service.ShipmentService;
 import pl.estrix.common.dto.GetShipmentDetailsDto;
 import pl.estrix.common.dto.model.ShipmentDto;
+import pl.estrix.common.dto.model.UserDto;
 import pl.estrix.common.log.Timed;
 import pl.estrix.frontend.jsf.FacesViewScope;
 import pl.estrix.frontend.web.MainController;
@@ -53,7 +54,7 @@ public class ShipmentListController extends MainController implements Serializab
 
         searchText = (String) getContext().getExternalContext().getSessionMap().get("_shipment_list_search");
 
-        lazyModel = new ShipmentLazyDataModel(shipmentService, searchText);
+        lazyModel = new ShipmentLazyDataModel(shipmentService, getCurrentUser(), searchText);
     }
 
     public void delete() {
@@ -69,26 +70,17 @@ public class ShipmentListController extends MainController implements Serializab
     }
 
     public void search() {
-        lazyModel = new ShipmentLazyDataModel(shipmentService, searchText);
+        lazyModel = new ShipmentLazyDataModel(shipmentService, getCurrentUser(),searchText);
     }
 
-    public String onRowSelectNavigate(SelectEvent event) {
-//        FacesContext.getCurrentInstance().getExternalContext().getFlash().put("selectedCar", event.getObject());
-//        System.out.println("event: " + event.getObject());
-        return "products.html?id=4&table_page=0&faces-redirect=true";
-    }
 
     public void onRowSelect(SelectEvent event){
-
-//        System.out.println("event: " + event.getObject() + " : " +selectedItem.getId());
-//        FacesContext.getCurrentInstance().getExternalContext().redirect("page.xhtml?id=" +pat.getId());
 
 
     }
 
     public void downloadInputFile() throws IOException {
         String fileName = "Przyklad.xlsx";
-//        File file = new File(fileName);
 //
         File file = new File(
                 getClass().getClassLoader().getResource("dane_wzor.xlsx").getFile()

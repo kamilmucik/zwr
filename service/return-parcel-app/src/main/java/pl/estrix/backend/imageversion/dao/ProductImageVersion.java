@@ -32,7 +32,8 @@ public class ProductImageVersion extends AuditableEntity {
     @Column(name = "title", length = 4096)
     private String title;
 
-
+    @Column(name = "warehouse_place", length = 32, nullable = true)
+    private String warehousePlace;
 
     @OneToMany(mappedBy="productImageVersion")
     private List<ProductImageVersionRevision> revisions;

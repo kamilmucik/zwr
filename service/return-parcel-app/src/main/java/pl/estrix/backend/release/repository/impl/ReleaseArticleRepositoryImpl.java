@@ -33,6 +33,7 @@ public class ReleaseArticleRepositoryImpl extends QueryDslRepositorySupportBase 
         return query.list(Projections.bean(
                 ReleaseArticle.class,
                 releaseArticle.id,
+                releaseArticle.warehousePlace,
                 releaseArticle.releaseDate
         ));
     }
@@ -46,6 +47,12 @@ public class ReleaseArticleRepositoryImpl extends QueryDslRepositorySupportBase 
     private JPQLQuery getQueryForFind(ReleaseArticleSearchCriteriaDto searchParams) {
         BooleanBuilder builder = new BooleanBuilder();
         JPQLQuery query = from(releaseArticle);
+
+if (searchParams.getUserDto() != null) {
+    builder.and(releaseArticle.warehousePlace.in(searchParams.getUserDto().getWarehouseIds().split(",")));
+}
+
+
         query.where(builder);
         return query;
     }

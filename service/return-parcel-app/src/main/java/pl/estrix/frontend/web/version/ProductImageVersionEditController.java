@@ -17,6 +17,8 @@ import javax.faces.context.FacesContext;
 import javax.faces.context.Flash;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 @Component("productImageVersionEditController")
 @Scope(FacesViewScope.NAME)
@@ -29,6 +31,8 @@ public class ProductImageVersionEditController extends MainController {
     private Long id;
     private Long parentId;
 
+    private List<String> optionalWarehouse;
+    private String selectedWarehouse;
     private Integer tablePageInx;
 
     private ProductImageVersionDto selected;
@@ -45,15 +49,13 @@ public class ProductImageVersionEditController extends MainController {
             id = Long.parseLong(request.getParameter("id"));
             tablePageInx = Integer.parseInt(request.getParameter("table_page"));
 
+            optionalWarehouse = Arrays.asList(getCurrentUser().getWarehouseIds().split(","));
+
             if (id == null || id == 0) {
                 selected = new ProductImageVersionDto();
                 selected.setId(0L);
-//                if (shipmentProductDtoList == null){
-//                    shipmentProductDtoList = tempShipmentProductDtoList;
-//                }
             }else{
                 selected = service.getItem(id);
-//                lazyModel = new ProductImageVersionLazyDataModel(service, id);
             }
         }catch (Exception e){
             e.printStackTrace();

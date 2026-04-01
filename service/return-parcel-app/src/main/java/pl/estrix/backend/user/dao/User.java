@@ -52,8 +52,12 @@ public class User extends AuditableEntity {
     @Column(name="verificationKey", length = 64)
     private String verificationKey;
 
-//    @Enumerated(EnumType.STRING)
     @Column(name = "role_name", length = 20)
     private String role;
-//    private Role role;
+
+    @Column(name="own_pin", length = 6)
+    private String ownPin;
+
+    @Column(name="own_warehouse", length = 32)
+    private String ownWarehouse;
 }

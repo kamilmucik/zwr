@@ -44,18 +44,6 @@
                         <f:param name="table_page" value="#{dtLazyView.tablePageInx}" />
                     </h:link>
 
-<!--                    <p:commandLink style="float: left;margin-left: 14px;margin-top: 0px;"-->
-<!--                                   title="Pobierz najnowsze wersje"-->
-<!--                                   ajax="false"-->
-<!--                                   actionListener="#{productImageVersionListController.downloadZipFile}">-->
-<!--                        <h:graphicImage library="sh" name="img/zip.png" />-->
-<!--                    </p:commandLink>-->
-<!--                    <p:commandLink style="float: left;margin-left: 14px;margin-top: 0px;"-->
-<!--                                   title="Aktualizuj bazę danych"-->
-<!--                                   ajax="false"-->
-<!--                                   actionListener="#{productImageVersionListController.updateSourceDirectory}">-->
-<!--                        <h:graphicImage library="sh" name="img/folder.png" />-->
-<!--                    </p:commandLink>-->
 
                     <h:outputLabel styleClass="module-table-header"
                                    value=" #{msg['admin.tile.list.heder']}" />
@@ -71,7 +59,11 @@
                                          title="Wyszukaj" />
                     </p:outputPanel>
                 </f:facet>
-                <p:column headerText="Numer artykułu" style="width:100px; text-align: center;">
+
+                <p:column headerText="Magazyn" style="width:200px; text-align: center;">
+                    <h:outputText value="#{imageVersion.warehousePlace}" />
+                </p:column>
+                <p:column headerText="Numer artykułu" style="width:200px; text-align: center;">
                     <h:outputText value="#{imageVersion.artNumber}" />
                 </p:column>
                 <p:column headerText="EAN" style="width:300px; text-align: left;">

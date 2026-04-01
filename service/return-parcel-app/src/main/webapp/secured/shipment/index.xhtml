@@ -17,7 +17,7 @@
             <p:dataTable var="shipment"
                          value="#{shipmentListController.lazyModel}"
                          paginator="true"
-                         rows="10"
+                         rows="15"
                          currentPageReportTemplate="{currentPage} z {totalPages}"
                          paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
                          rowsPerPageTemplate="5,10,15"
@@ -58,6 +58,9 @@
                                          title="Wyszukaj" />
                     </p:outputPanel>
                 </f:facet>
+                <p:column headerText="Magazyn" style="width:200px; text-align: center;">
+                    <h:outputText value="#{shipment.warehousePlace}" />
+                </p:column>
                 <p:column headerText="Numer">
                     <h:outputText value="#{shipment.number}" />
                 </p:column>

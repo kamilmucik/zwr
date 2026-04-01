@@ -37,19 +37,11 @@ public class CustomExceptionHandler extends ExceptionHandlerWrapper {
 
             try {
                 Flash flash = fc.getExternalContext().getFlash();
-
-                // Put the exception in the flash scope to be displayed in the error
-                // page if necessary ...
                 flash.put("errorDetails", throwable.getMessage());
-//
-//                System.out.println("the error is put in the flash: " + throwable.getMessage());
-//                System.out.println("the error is put in the flash: " + throwable.getLocalizedMessage());
-//                System.out.println("the error is put in the flash: " + throwable.toString());
-//                System.out.println("the error is put in the flash: " + throwable.getStackTrace());
-
-                NavigationHandler navigationHandler = fc.getApplication().getNavigationHandler();
-
-                navigationHandler.handleNavigation(fc, null, "/secured/error.html?faces-redirect=true");
+                if (!fc.getExternalContext().isResponseCommitted()) {
+                    NavigationHandler navigationHandler = fc.getApplication().getNavigationHandler();
+                    navigationHandler.handleNavigation(fc, null, "/secured/error.html?faces-redirect=true");
+                }
 
                 fc.renderResponse();
             } finally {

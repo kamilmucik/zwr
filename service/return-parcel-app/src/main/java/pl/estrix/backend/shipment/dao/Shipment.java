@@ -26,6 +26,9 @@ public class Shipment extends AuditableEntity {
         @Column(name = "number", length = 50, nullable = false)
         private String number;
 
+        @Column(name = "warehouse_place", length = 32, nullable = true)
+        private String warehousePlace;
+
         @Column(name = "active", nullable = false)
         private Boolean active;
 

@@ -25,6 +25,9 @@
                 <h:panelGrid columns="4" style="font-size: 12px; vertical-align:top; "  columnClasses="alignTop,alignTop,alignTop" >
                     <h:inputHidden value="#{shipmentEditController.id}" id="id" />
                     <h:inputHidden value="#{shipmentEditController.tablePageInx}" id="table_page" />
+                    <p:selectOneMenu id="warehouse" value="#{productImageVersionListController.selectedWarehouse}" style="width: 250px">
+                        <f:selectItems value="#{productImageVersionListController.optionalWarehouse}" />
+                    </p:selectOneMenu>
                     <p:panel  header="Import pliku" style="margin-bottom:20px">
                         <p:fileUpload fileUploadListener="#{productImageVersionListController.handleFileUpload}"
                                       mode="advanced"

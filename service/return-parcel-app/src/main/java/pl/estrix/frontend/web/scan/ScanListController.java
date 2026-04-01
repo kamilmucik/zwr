@@ -36,9 +36,7 @@ public class ScanListController extends MainController implements Serializable {
         tablePageInx = 1;
         searchText = (String) getContext().getExternalContext().getSessionMap().get("_scan_list_search");
 
-//        System.out.println("tablePageInx: " + tablePageInx);
-//        System.out.println("searchText: " + searchText);
-        lazyModel = new ScanLazyDataModel(shipmentService, searchText);
+        lazyModel = new ScanLazyDataModel(shipmentService, getCurrentUser(), searchText);
     }
 
     public void edit(Long id) {
@@ -50,22 +48,7 @@ public class ScanListController extends MainController implements Serializable {
     }
 
     public void search() {
-//        System.out.println("ScanListController.searchText: " + searchText);
-        lazyModel = new ScanLazyDataModel(shipmentService, searchText);
+        lazyModel = new ScanLazyDataModel(shipmentService,getCurrentUser(), searchText);
     }
-
-    public String onRowSelectNavigate(SelectEvent event) {
-        return "details.html?id=4&table_page=0&faces-redirect=true";
-    }
-
-
-//    public Integer getTablePageInx() {
-//        return tablePageInx;
-//    }
-//
-//    public void setTablePageInx(Integer tablePageInx) {
-//        this.tablePageInx = tablePageInx;
-//    }
-
 
 }

@@ -27,6 +27,7 @@ public class BaseReleaseArticleCommandExecutor extends BaseCommandExecutor<Relea
     public ReleaseArticle mapDtoToEntity(ReleaseArticleDto dto) {
         ReleaseArticle entity = new ReleaseArticle();
         entity.setId(dto.getId());
+        entity.setWarehousePlace(dto.getWarehousePlace());
         entity.setReleaseDate(dto.getReleaseDate());
         return entity;
     }
@@ -36,6 +37,7 @@ public class BaseReleaseArticleCommandExecutor extends BaseCommandExecutor<Relea
             return null;
         ReleaseArticleDto dto = new ReleaseArticleDto();
         dto.setId(entity.getId());
+        dto.setWarehousePlace(entity.getWarehousePlace());
         dto.setReleaseDate(entity.getReleaseDate());
         return dto;
     }

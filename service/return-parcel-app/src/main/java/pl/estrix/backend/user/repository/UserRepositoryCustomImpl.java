@@ -39,7 +39,9 @@ public class UserRepositoryCustomImpl extends QueryDslRepositorySupportBase impl
                 user.locked,
                 user.subscribed,
                 user.verificationKey,
-                user.role
+                user.role,
+                user.ownWarehouse,
+                user.ownPin
         ));
     }
 

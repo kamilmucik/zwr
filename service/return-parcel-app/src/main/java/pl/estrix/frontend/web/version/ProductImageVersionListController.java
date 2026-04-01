@@ -53,6 +53,10 @@ public class ProductImageVersionListController extends MainController implements
 
     private String selectedImage;
 
+
+    private List<String> optionalWarehouse;
+    private String selectedWarehouse;
+
     private UploadedFile uploadedFile;
 
     @Autowired
@@ -69,13 +73,13 @@ public class ProductImageVersionListController extends MainController implements
     @PostConstruct
     public void init() {
         super.init();
+        optionalWarehouse = Arrays.asList(getCurrentUser().getWarehouseIds().split(","));
         searchText = (String) getContext().getExternalContext().getSessionMap().get("_version_list_search");
-
-        lazyModel = new ProductImageVersionLazyDataModel(releaseService, searchText);
+        lazyModel = new ProductImageVersionLazyDataModel(releaseService,getCurrentUser(), searchText);
     }
 
     public void search() {
-        lazyModel = new ProductImageVersionLazyDataModel(releaseService, searchText);
+        lazyModel = new ProductImageVersionLazyDataModel(releaseService, getCurrentUser(), searchText);
     }
 
     public void edit(Long id) {
@@ -121,8 +125,6 @@ public class ProductImageVersionListController extends MainController implements
         return revisionDto.getData();
     }
 
-
-
     public void loadData() {
         processing = true;
         productImageVersionDtoList.clear();
@@ -151,6 +153,7 @@ public class ProductImageVersionListController extends MainController implements
                     inputDto.setArtNumber(artNumberCandidate);
                     inputDto.setTitle(getValueFromCell(row.getCell(1)));
                     inputDto.setEan(getValueFromCell(row.getCell(2)));
+                    inputDto.setWarehousePlace(selectedWarehouse);
                     number++;
                     productImageVersionDtoList.add(inputDto);
                 }
@@ -162,12 +165,12 @@ public class ProductImageVersionListController extends MainController implements
         }
     }
 
-
     public void saveDetail() throws IOException {
         processing = true;
         FacesContext facesContext = FacesContext.getCurrentInstance();
 
         productImageVersionDtoList.forEach(prod -> {
+            prod.setWarehousePlace(selectedWarehouse);
             releaseService.saveOrUpdate(prod);
         });
 

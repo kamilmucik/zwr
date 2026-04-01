@@ -189,8 +189,8 @@ public class ProductImageVersionService {
         updateRevisionExecutor.setMainImage(id);
     }
 
-    public RestProductImageVersionDto findByEAN(String ean, Integer pageNumber,Integer pageSize) {
-        ListResponseDto<ProductImageVersionDto> revisionDto = getProductImageVersionDtoListResponseDto(ean, pageNumber, pageSize);
+    public RestProductImageVersionDto findByEAN(String ean, String warehouse, Integer pageNumber,Integer pageSize) {
+        ListResponseDto<ProductImageVersionDto> revisionDto = getProductImageVersionDtoListResponseDto(ean, warehouse, pageNumber, pageSize);
 
         revisionDto.setTotalPages(calculateTotalPages(revisionDto.getTotalCount(), pageSize));
 
@@ -199,13 +199,12 @@ public class ProductImageVersionService {
 
     public int calculateTotalPages(int itemCounter, int pageSize) {
         if (pageSize <= 0) {
-//            throw new IllegalArgumentException("Rozmiar strony musi być większy od zera");
             throw new ReturnParcelRESTException("Rozmiar strony musi być większy od zera");
         }
         return (int) Math.ceil((double) itemCounter / pageSize);
     }
 
-    private ListResponseDto<ProductImageVersionDto> getProductImageVersionDtoListResponseDto(String ean, Integer pageNumber,Integer pageSize) {
+    private ListResponseDto<ProductImageVersionDto> getProductImageVersionDtoListResponseDto(String ean, String warehouse, Integer pageNumber,Integer pageSize) {
         PagingCriteria pCriteria = PagingCriteria
                 .builder()
                 .start(0)
@@ -215,13 +214,13 @@ public class ProductImageVersionService {
         ProductImageVersionSearchCriteriaDto searchCriteriaDto = ProductImageVersionSearchCriteriaDto
                 .builder()
                 .tableSearch(ean)
+                .userDto(warehouse != null && !warehouse.isEmpty() ? UserDto.builder().warehouseIds(warehouse).build() : null)
                 .shouldAddAllImages(true)
                 .sortField("id")
                 .sortOrder(SortOrder.ASCENDING)
                 .build();
 
         ListResponseDto<ProductImageVersionDto> revisionDto = this.getItems(searchCriteriaDto, pCriteria);
-
 
         revisionDto.getData().stream().forEach(  image -> {
             ProductImageVersionRevisionSearchCriteriaDto searchCriteria = new ProductImageVersionRevisionSearchCriteriaDto();

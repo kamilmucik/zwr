@@ -53,6 +53,9 @@ public class ShipmentEditController extends MainController {
 
     private UploadedFile uploadedFile;
 
+    private List<String> optionalWarehouse;
+    private String selectedWarehouse;
+
     private List<ShipmentProductDto> shipmentProductDtoList;
 
     private List<ShipmentProductShopDto> shipmentProductShopDtoList;
@@ -73,6 +76,8 @@ public class ShipmentEditController extends MainController {
             HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
             id = Long.parseLong(request.getParameter("id"));
             tablePageInx = Integer.parseInt(request.getParameter("table_page"));
+
+            optionalWarehouse = Arrays.asList(getCurrentUser().getWarehouseIds().split(","));
 
             if (id == null || id == 0) {
                 selected = new ShipmentDto();

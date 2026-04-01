@@ -33,8 +33,6 @@ public class UserService {
     @Autowired
     private PasswordEncoder standardPasswordEncoder;
 
-
-    @Transactional
     public ListResponseDto<UserDto> getItems(UserSearchCriteriaDto searchCriteria, PagingCriteria pagingCriteria){
         return readExecutor.find(searchCriteria,pagingCriteria);
     }
@@ -52,12 +50,10 @@ public class UserService {
         return temp;
     }
 
-    @Transactional
     public UserDto getItem(Long id){
         return readExecutor.findById(id);
     }
 
-    @Transactional
     public UserDto getItem(String login){
         return readExecutor.findByLogin(login);
     }
@@ -84,5 +80,13 @@ public class UserService {
             temp = updateExecutor.update(temp);
         }
         return temp;
+    }
+    public void changePin(UserDto userDto) {
+        UserDto temp = readExecutor.findById(userDto.getId());
+        temp.setPin(userDto.getPin());
+
+        if (temp.getId() != null){
+            updateExecutor.update(temp);
+        }
     }
 }

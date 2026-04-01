@@ -79,6 +79,18 @@
                     </p:selectOneMenu>
                     <h:outputText  />
                     <p:message for="role" id="roleMsg" />
+
+                    <h:outputLabel for="warehouse"  value="Magazyny: " />
+                    <p:selectManyMenu id="warehouse" value="#{userEditView.selectedWarehouses}" var="warehouse" style="width: 282px; border: 1px solid #d6d6d6; background-color: #dfe4e6;">
+                        <f:selectItems value="#{userEditView.warehouses}" var="warehouse"
+                                       itemLabel="#{warehouse.id}"
+                                       itemValue="#{warehouse.placeName}" />
+                        <p:column>
+                            <h:outputText value="#{warehouse}" />
+                        </p:column>
+                    </p:selectManyMenu>
+                    <h:outputText  />
+                    <p:message for="warehouse" id="warehouseMsg" />
                 </h:panelGrid>
 
                 <p:commandButton value="Zapisz"

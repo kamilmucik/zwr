@@ -39,10 +39,11 @@ public class ProductImageVersionRestController {
     @ResponseBody
     public RestProductImageVersionDto findByEAN(
             @RequestParam(value = "ean", required = true, defaultValue = "") String ean,
+            @RequestParam(value = "warehouse", required = false, defaultValue = "") String warehouse,
             @RequestParam(value = "page", required = false, defaultValue = "0") Integer pageNumber,
             @RequestParam(value = "pageSize", required = false, defaultValue = "5") Integer pageSize
     ) {
-        return service.findByEAN(ean, pageNumber, pageSize);
+        return service.findByEAN(ean, warehouse, pageNumber, pageSize);
     }
 
     @Async

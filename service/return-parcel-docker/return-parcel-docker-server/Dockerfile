@@ -1,4 +1,4 @@
-FROM tomcat:9.0.106-jdk11-corretto-al2 AS builder
+FROM tomcat:9.0.116-jdk11-corretto-al2 AS builder
 
 ARG VERSION
 ARG MODULE
@@ -10,7 +10,7 @@ COPY custom build/
 
 ####################################################
 # Build image from builder image
-FROM tomcat:9.0.106-jdk11-corretto-al2
+FROM tomcat:9.0.116-jdk11-corretto-al2
 
 ARG VERSION
 

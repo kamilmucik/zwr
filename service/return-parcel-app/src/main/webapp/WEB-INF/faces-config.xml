@@ -277,6 +277,11 @@
 			<redirect></redirect>
 		</navigation-case>
 		<navigation-case>
+			<from-outcome>pin</from-outcome>
+			<to-view-id>/secured/user/change_pin.xhtml</to-view-id>
+			<redirect></redirect>
+		</navigation-case>
+		<navigation-case>
 			<from-outcome>new</from-outcome>
 			<to-view-id>/secured/user/new.xhtml</to-view-id>
 			<redirect></redirect>
@@ -299,6 +304,20 @@
 	<navigation-rule>
 		<display-name>secured/user/change_password.xhtml</display-name>
 		<from-view-id>/secured/user/change_password.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>saveAndOut</from-outcome>
+			<to-view-id>/secured/user/index.xhtml</to-view-id>
+			<redirect></redirect>
+		</navigation-case>
+		<navigation-case>
+			<from-outcome>cancel</from-outcome>
+			<to-view-id>/secured/user/index.xhtml</to-view-id>
+			<redirect></redirect>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<display-name>secured/user/change_pin.xhtml</display-name>
+		<from-view-id>/secured/user/change_pin.xhtml</from-view-id>
 		<navigation-case>
 			<from-outcome>saveAndOut</from-outcome>
 			<to-view-id>/secured/user/index.xhtml</to-view-id>

@@ -31,4 +31,7 @@ public class ReleaseArticle extends AuditableEntity {
         @OneToMany(mappedBy="releaseArticle")
         private List<ReleaseArticlePallet> pallets;
 
+        @Column(name = "warehouse_place", length = 32, nullable = true)
+        private String warehousePlace;
+
 }

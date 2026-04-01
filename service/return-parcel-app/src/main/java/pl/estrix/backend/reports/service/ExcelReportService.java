@@ -124,6 +124,8 @@ public class ExcelReportService {
             Cell h_G = row.createCell(6);
             h_G.setCellValue("uszk.");
             h_G.setCellStyle(style1);
+
+
             Cell h_H = row.createCell(7);
             h_H.setCellValue("Nazwa");
             h_H.setCellStyle(style1);

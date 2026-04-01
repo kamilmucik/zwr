@@ -90,24 +90,12 @@
                 <h:form id="form-printers"  style="margin-bottom:10px; display: block; font-size: 18px; padding: 8px; vertical-align:text-top;max-width:720px;margin: 0 auto;">
                     <f:facet name="header">
 
-<!--                        <p:commandButton action="#{settingController.fetchAllPrinters()}"-->
-<!--                                         icon="pi pi-refresh" update="@form" process="@this"/>-->
                     </f:facet>
                     <p:dataTable id="printerTable"
                                  var="printer"
                                  currentPageReportTemplate="{currentPage} z {totalPages}"
                                  value="#{settingsEditController.printers}"
-                                 rowKey="#{account.id}">
-<!--                        <f:facet name="header">-->
-<!--                            <p:outputPanel id="tableSearch">-->
-<!--                                <p:commandButton actionListener="#{settingsEditController.refreshPrinter}"-->
-<!--                                                 update="@([id$=printerTable])"-->
-<!--                                                 id="searchButton"-->
-<!--                                                 icon="ui-icon-search"-->
-<!--                                                 process="@this"-->
-<!--                                                 title="Wyszukaj" />-->
-<!--                            </p:outputPanel>-->
-<!--                        </f:facet>-->
+                                 rowKey="#{printer.id}">
                         <p:column headerText="Drukarka" >
                             <h:outputText value="#{printer.name}" />
                         </p:column>
@@ -135,6 +123,121 @@
                         </p:column>
                     </p:dataTable>
                 </h:form>
+
+                <h:form id="form-warehouses"  style="margin-bottom:10px; display: block; font-size: 18px; padding: 8px; vertical-align:text-top;max-width:720px;margin: 0 auto;">
+
+                    <p:dataTable id="warehouseTable"
+                                 var="warehouse"
+                                 currentPageReportTemplate="{currentPage} z {totalPages}"
+                                 value="#{settingsEditController.warehouses}"
+                                 rowKey="#{warehouse.id}">
+
+                        <f:facet name="header">
+                            <h:outputLabel styleClass="module-table-header" value="Magazyny" />
+                            <p:outputPanel id="tableSearch"
+                                           styleClass="tableSearch"
+                                           style="border-bottom: 8px solid transparent;"
+                            >
+                                <p:commandLink styleClass=""
+                                               title="Nowy"
+                                               action="#{settingsEditController.editWarehouse(0)}"
+                                               update="@([id$=warehouseEditDisplay])"
+                                               oncomplete="PF('warehouseEditDialogW').show();">
+                                    <h:graphicImage library="sh" name="img/new.png" />
+                                </p:commandLink>
+                            </p:outputPanel>
+                        </f:facet>
+
+                        <p:column headerText="Magazyn" >
+                            <h:outputText value="#{warehouse.placeName}" />
+                        </p:column>
+                        <p:column headerText="" style="width: 120px; text-align: center;">
+                            <p:commandLink styleClass=""
+                                           title="Edytuj"
+                                           action="#{settingsEditController.editWarehouse(warehouse.id)}"
+                                           update="@([id$=warehouseEditDisplay])"
+                                           oncomplete="PF('warehouseEditDialogW').show();">
+                                <h:graphicImage library="sh" name="img/edit.png" />
+                            </p:commandLink>
+                            <p:commandLink styleClass=""
+                                           title="Usuń"
+                                           action="#{settingsEditController.editWarehouse(warehouse.id)}"
+                                           update="@([id$=warehouseDeleteDisplay])"
+                                           oncomplete="PF('warehouseDeleteDialogW').show();">
+                                <h:graphicImage library="sh" name="img/delete.png" />
+                            </p:commandLink>
+                        </p:column>
+<!--                        <p:column headerText="Domyślna" style="width: 120px; text-align: center;">-->
+<!--                            <p:commandLink styleClass=""-->
+<!--                                           title="Domyślne"-->
+<!--                                           action="#{settingsEditController.shouldDefault(printer.id)}"-->
+<!--                                           update="@([id$=printerTable])"-->
+<!--                                           ajax="true"-->
+<!--                            >-->
+<!--                                <h:graphicImage library="sh" name="img/#{printer.isDefault}.png" width="32"/>-->
+<!--                            </p:commandLink>-->
+<!--                        </p:column>-->
+                    </p:dataTable>
+                    <p:dialog id="warehouseDeleteDialog"
+                              widgetVar="warehouseDeleteDialogW"
+                              header="Usuń"
+                              modal="true"
+                              resizable="false"
+                              minHeight="200"
+                              appendTo="@(body)"
+                              width="400">
+                        <h:panelGrid columns="3" id="warehouseDeleteDisplay" columnClasses="alignTop,alignTop,alignTop"
+                                     style="display: block;width: 270px; border: 0px black solid;">
+                            <h:outputLabel value="Czy usunąć '" />
+                            <h:outputLabel value="#{settingsEditController.selectedWarehouse.placeName}" />
+                            <h:outputLabel value="'?" />
+                        </h:panelGrid>
+                        <p:separator />
+                        <p:commandButton value="OK"
+                                         actionListener="#{settingsEditController.deleteWarehouse}"
+                                         partialSubmit="true"
+                                         ajax="true"
+                                         oncomplete="PF('warehouseDeleteDialogW').hide();"
+                                         process="@this"
+                                         style="display: inline; margin: 0 auto 10px; width: 100px;"
+                                         update="@([id$=form-warehouses])" />
+                    </p:dialog>
+                    <p:dialog id="warehouseEditDialog"
+                              widgetVar="warehouseEditDialogW"
+                              header="Nowy"
+                              modal="true"
+                              resizable="false"
+                              minHeight="200"
+                              appendTo="@(body)"
+                              width="400">
+                            <h:panelGrid columns="3" id="warehouseEditDisplay" columnClasses="alignTop,alignTop,alignTop"
+                                         style="display: block;width: 270px; border: 0px black solid;">
+
+                                <h:inputText value="#{settingsEditController.selectedWarehouse.placeName}" id="table_page" />
+                            </h:panelGrid>
+                            <p:separator />
+                            <p:commandButton value="OK"
+                                             actionListener="#{settingsEditController.saveWarehouse()}"
+                                             partialSubmit="true"
+                                             ajax="true"
+                                             oncomplete="PF('warehouseEditDialogW').hide();"
+                                             process="@this,  @([id$=warehouseEditDisplay]"
+                                             style="display: inline; margin: 0 auto 10px; width: 100px;"
+                                             update="@([id$=form-warehouses])" />
+                    </p:dialog>
+
+                </h:form>
+
+
+
+
+
+            <h:form>
+
+
+
+            </h:form>
+
             </div>
         </div>
 

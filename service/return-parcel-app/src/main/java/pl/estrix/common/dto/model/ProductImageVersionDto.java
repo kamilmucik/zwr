@@ -14,6 +14,8 @@ import java.util.List;
 @Builder
 public class ProductImageVersionDto extends BaseEntityDto<Long> {
 
+
+    private String warehousePlace;
     private String ean;
 
     private String title;

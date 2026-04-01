@@ -4,6 +4,7 @@ services:
     image: mysql:8.0.32
     container_name: rp-db
     restart: always
+    platform: linux/amd64
     #env_file: .env
     environment:
       - MYSQL_DATABASE=zwroty_e_strix_com
@@ -48,7 +49,7 @@ services:
     ports:
       - 8004:8004
   rp-server:
-    image: "registry.hub.docker.com/kamilmucik/return-parcel-server:2.5.5"
+    image: "registry.hub.docker.com/kamilmucik/return-parcel-server:2.6.0"
     container_name: rp-server
     #   platform: linux/x86_64
     platform: linux/amd64

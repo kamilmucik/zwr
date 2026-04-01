@@ -9,8 +9,10 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import pl.estrix.backend.print.service.PrinterService;
 import pl.estrix.backend.settings.service.SettingService;
+import pl.estrix.backend.warehouse.service.WarehouseService;
 import pl.estrix.common.dto.model.PrinterDto;
 import pl.estrix.common.dto.model.SettingsDto;
+import pl.estrix.common.dto.model.WarehouseDto;
 import pl.estrix.frontend.jsf.FacesViewScope;
 import pl.estrix.frontend.web.MainController;
 
@@ -35,8 +37,15 @@ public class SettingsEditController extends MainController {
     private PrinterDto selectedPrinter;
     private PrinterDto newPrinter;
 
+    private List<WarehouseDto> warehouses;
+    private WarehouseDto selectedWarehouse;
+
+
     @Autowired
     private PrinterService printerService;
+
+    @Autowired
+    private WarehouseService warehouseService;
 
     @Autowired
     private SettingService settingService;
@@ -44,12 +53,11 @@ public class SettingsEditController extends MainController {
     @PostConstruct
     public void init() {
         selected = settingService.getSetting();
-//        printers = printerService.findPrinters();
         printers = printerService.findAllPrinters();
         newPrinter = new PrinterDto();
+
+        warehouses = warehouseService.getItems(null, null).getData();
     }
-
-
 
     public void saveDetail() throws Exception {
         FacesContext facesContext = FacesContext.getCurrentInstance();
@@ -66,17 +74,14 @@ public class SettingsEditController extends MainController {
     }
 
     public void shouldDefault(Long id) {
-//        System.out.println("shouldDefault: " + id);
         PrinterDto tmp = printerService.getDatefault();
         selectedPrinter = printerService.get(id);
 
-//        System.out.println("tmp: " + tmp);
         if (tmp != null){
             tmp.setIsDefault(Boolean.FALSE);
             printerService.update(tmp);
         }
 
-//        selectedPrinter = printerService.get(id);
         selectedPrinter.setIsDefault(Boolean.TRUE);
         printerService.update(selectedPrinter);
 
@@ -98,10 +103,28 @@ public class SettingsEditController extends MainController {
         if (selectedPrinter != null) {
             printerService.delete(selectedPrinter.getId());
         }
-
-//        printers.clear();
         printers = printerService.findAllPrinters();
-//        printers = printerService.findPrinters();
+    }
+
+    public void editWarehouse(Long id) {
+        if (id == null || id == 0) {
+            selectedWarehouse = new WarehouseDto();
+        } else {
+            selectedWarehouse = warehouseService.getItem(id);
+        }
+    }
+
+    public void deleteWarehouse() {
+        LOGGER.debug("deleteWarehouse: {}", selectedWarehouse.getPlaceName());
+        warehouseService.delete(selectedWarehouse);
+
+        warehouses = warehouseService.getItems(null, null).getData();
+    }
+    public void saveWarehouse() {
+        LOGGER.debug("saveWarehouse: {}", selectedWarehouse.getPlaceName());
+        warehouseService.saveOrUpdate(selectedWarehouse);
+
+        warehouses = warehouseService.getItems(null, null).getData();
     }
 
 }

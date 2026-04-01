@@ -50,6 +50,10 @@
                                          title="Wyszukaj" />
                     </p:outputPanel>
                 </f:facet>
+
+                <p:column headerText="Magazyn" style="width:200px; text-align: center;">
+                    <h:outputText value="#{shipment.warehousePlace}" />
+                </p:column>
                 <p:column headerText="Numer">
                     <h:outputText value="#{shipment.number}" />
                 </p:column>

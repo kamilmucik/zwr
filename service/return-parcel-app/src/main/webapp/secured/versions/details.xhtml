@@ -64,6 +64,13 @@
                     </p:inputText>
                     <h:outputText  />
                     <p:message for="title" id="titleMsg" />
+
+                    <h:outputLabel for="warehouse"  value="Magazyn: " />
+                    <p:selectOneMenu id="warehouse" value="#{productImageVersionEditController.selected.warehousePlace}" style="width: 250px">
+                        <f:selectItems value="#{productImageVersionEditController.optionalWarehouse}" />
+                    </p:selectOneMenu>
+                    <h:outputText  />
+                    <p:message for="warehouse" id="warehouseMsg" />
                 </h:panelGrid>
 
 

@@ -16,5 +16,6 @@ public class ReleaseArticleDto extends BaseEntityDto<Long> {
 
     private LocalDate releaseDate;
 
+    private String warehousePlace;
     private List<ReleaseArticlePalletDto> palletDtoList = new ArrayList<>();
 }
