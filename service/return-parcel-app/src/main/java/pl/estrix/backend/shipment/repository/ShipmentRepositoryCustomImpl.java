@@ -48,6 +48,7 @@ public class ShipmentRepositoryCustomImpl extends QueryDslRepositorySupportBase 
         BooleanBuilder builder = new BooleanBuilder();
         JPQLQuery query = from(shipment);
 
+//        builder.and(shipment.warehousePlace.isNull());
         if (searchParams.getUserDto() != null) {
             builder.and(shipment.warehousePlace.in(searchParams.getUserDto().getWarehouseIds().split(",")));
         }

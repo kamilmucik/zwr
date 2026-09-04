@@ -37,7 +37,7 @@ insert into release_article (id, release_date) values (2, '20210323');
 insert into release_article_pallet (id, release_article_id, release_code, art_number,counter) values (1, 1, '123', '321',234);
 insert into release_article_pallet (id, release_article_id, release_code, art_number,counter) values (2, 1, '234', '432',234);
 -- 003001517280117
--- http://localhost:8081/release/updateget/003001517200848
+-- http://localhost:8881/release/updateget/003001517200848
 
 --20210419
 ALTER TABLE `release_article_pallet` ADD `pallet_flag` VARCHAR(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT "C";

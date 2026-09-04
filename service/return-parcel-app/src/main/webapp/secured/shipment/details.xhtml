@@ -29,6 +29,11 @@
                     <h:outputText  />
                     <p:message for="number" id="numberMsg" />
 
+                    <h:outputLabel for="warehouse"  value="Magazyn: " />
+                    <p:inputText id="warehouse" style="width: 260px" value="#{shipmentEditController.selectedWarehouse}" label="warehouse" disabled="true"/>
+                    <h:outputText  />
+                    <p:message for="warehouse" id="warehouseMsg" />
+
                     <h:outputLabel for="active"  value="Aktywny: " />
                     <p:selectBooleanButton id="active" value="#{shipmentEditController.selected.active}" onLabel="Tak" offLabel="Nie" style="width:60px" />
                     <h:outputText  />

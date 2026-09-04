@@ -3,10 +3,9 @@
 2.6.0
 - zmiana ustawien kolumn w raporcie
 + 3h dodanie magazynów dla użytkownika
-+ dodanie dynamicznej listy magazynów w zakładce ustawienia
-- dodanie logowania za pomocą pin dla RestApi
-- dodanie magazynu dla każdej funkcjonalności
-- utrzymywanie strony po usuwaniu danych w tabelach
++ 3h dodanie dynamicznej listy magazynów w zakładce ustawienia
++ 2h dodanie logowania za pomocą pin dla RestApi
++ 1h utrzymywanie strony po usuwaniu danych w tabelach
 - optymalizacja czasu zaczytywania 
 - wyciągnięcie pliku configure do katalogu tomcat
 - poprawki zakładki dostawa -> usuwanie, zaczytywanie

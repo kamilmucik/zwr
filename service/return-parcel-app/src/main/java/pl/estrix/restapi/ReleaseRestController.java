@@ -47,6 +47,7 @@ public class ReleaseRestController {
         if (releaseArticleDto == null){
             releaseArticleDto = new ReleaseArticleDto();
             releaseArticleDto.setReleaseDate(LocalDate.now());
+            releaseArticleDto.setWarehousePlace("Lodz");
             releaseArticleDto = releaseService.create(releaseArticleDto);
         }
 

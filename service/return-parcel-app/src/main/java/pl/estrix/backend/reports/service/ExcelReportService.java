@@ -109,22 +109,25 @@ public class ExcelReportService {
             Cell h_B = row.createCell(1);
             h_B.setCellValue("Ilość");
             h_B.setCellStyle(style1);
+
             Cell h_C = row.createCell(2);
             h_C.setCellValue("MP");
             h_C.setCellStyle(style1);
+
+
             Cell h_D = row.createCell(3);
-            h_D.setCellValue("razem");
+            h_D.setCellValue("z ceną");
             h_D.setCellStyle(style1);
             Cell h_E = row.createCell(4);
-            h_E.setCellValue("z ceną");
+            h_E.setCellValue("utylizacja");
             h_E.setCellStyle(style1);
             Cell h_F = row.createCell(5);
-            h_F.setCellValue("utylizacja");
+            h_F.setCellValue("uszk.");
             h_F.setCellStyle(style1);
-            Cell h_G = row.createCell(6);
-            h_G.setCellValue("uszk.");
-            h_G.setCellStyle(style1);
 
+            Cell h_G = row.createCell(6);
+            h_G.setCellValue("razem");
+            h_G.setCellStyle(style1);
 
             Cell h_H = row.createCell(7);
             h_H.setCellValue("Nazwa");
@@ -149,25 +152,29 @@ public class ExcelReportService {
                         XSSFCell cell_B = row.createCell(1);
                         cell_B.setCellValue(shipmentProductDto.getCounter());
                         cell_B.setCellStyle(style2);
+
                         XSSFCell cell_C = row.createCell(2);
                         cell_C.setCellValue(shipmentProductDto.getScanCorrect());
                         cell_C.setCellStyle(style2);
+
                         XSSFCell cell_D = row.createCell(3);
-//                        String strFormula = "SUM(C" + (rowIndex + 1) + ":G" + (rowIndex + 1) + ")";
-//                        cell_D.setCellType(HSSFCell.CELL_TYPE_FORMULA);
-//                        cell_D.setCellFormula(strFormula);
-                        cell_D.setCellValue(shipmentProductDto.getScanCorrect()+shipmentProductDto.getScanError());
+                        cell_D.setCellValue((shipmentProductDto.getScanLabel()==null)? 0L :shipmentProductDto.getScanLabel());
                         cell_D.setCellStyle(style2);
 
                         XSSFCell cell_E = row.createCell(4);
-                        cell_E.setCellValue((shipmentProductDto.getScanLabel()==null)? 0L :shipmentProductDto.getScanLabel());
+                        cell_E.setCellValue(shipmentProductDto.getScanUtilization());
                         cell_E.setCellStyle(style2);
-
                         XSSFCell cell_F = row.createCell(5);
-                        cell_F.setCellValue(shipmentProductDto.getScanUtilization());
+                        cell_F.setCellValue(shipmentProductDto.getScanError());
                         cell_F.setCellStyle(style2);
+
                         XSSFCell cell_G = row.createCell(6);
-                        cell_G.setCellValue(shipmentProductDto.getScanError());
+                        cell_G.setCellValue(
+                                shipmentProductDto.getScanCorrect()
+                                + shipmentProductDto.getScanError()
+                                + ((shipmentProductDto.getScanLabel()==null)? 0L :shipmentProductDto.getScanLabel())
+                                + ((shipmentProductDto.getScanUtilization()==null)? 0L :shipmentProductDto.getScanUtilization())
+                        );
                         cell_G.setCellStyle(style2);
 
                     } else {

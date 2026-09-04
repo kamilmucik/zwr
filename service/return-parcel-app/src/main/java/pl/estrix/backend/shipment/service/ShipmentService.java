@@ -88,6 +88,7 @@ public class ShipmentService {
                     .builder()
                     .number(saveShipmentDto.getShipmentProductDtoList().get(0).getArtReturn())
                     .active(Boolean.FALSE)
+                    .warehousePlace(saveShipmentDto.getShipmentDto().getWarehousePlace())
                     .group(1)
                     .build();
             ShipmentDto shipmentOut = createShipmentExecutor.create(shipmentDto);
@@ -126,7 +127,7 @@ public class ShipmentService {
     @Transactional
     public void delete (ShipmentDto storeDto){
         deleteShipmentProductExecutor.deleteByArtReturn(storeDto.getNumber());
-        deleteShipmentProductShopExecutor.deleteByArtReturn(storeDto.getNumber());
+//        deleteShipmentProductShopExecutor.deleteByArtReturn(storeDto.getNumber());
         deleteShipmentExecutor.delete(storeDto);
     }
 

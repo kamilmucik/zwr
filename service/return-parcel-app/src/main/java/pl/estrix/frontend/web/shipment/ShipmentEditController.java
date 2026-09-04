@@ -86,6 +86,7 @@ public class ShipmentEditController extends MainController {
                 }
             }else{
                 selected = shipmentService.getItem(id).getShipmentDto();
+                selectedWarehouse = selected.getWarehousePlace();
                 lazyModel = new ShipmentProductLazyDataModel(shipmentService, id);
             }
         }catch (Exception e){
@@ -122,6 +123,7 @@ public class ShipmentEditController extends MainController {
                     .build();
             dto.setId(selected.getId());
             selected.setGroup(1);
+            selected.setWarehousePlace(selectedWarehouse);
             shipmentService.saveOrUpdate(dto);
             facesContext.addMessage("null", new FacesMessage(FacesMessage.SEVERITY_INFO, "Zapis rekordu", "qeqew"));
         } catch (Exception e) {
